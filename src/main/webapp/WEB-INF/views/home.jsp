@@ -8,7 +8,6 @@
 <h1>
 	Hello world!  
 </h1>
-
-<P>  The time on the server is ${serverTime}. </P>
+	<a href="/getCgvMovieInfo">CGV 영화 정보 수집</a>
 </body>
 </html>
