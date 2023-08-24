@@ -4,7 +4,24 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.MovieProject.Dao.AdminDao">
 	<insert id="insertMovie">
-		INSERT INTO MOVIES(MVCODE,MVTITLE,MVDIRECTOR,MVACTORS,MVGENRE,MVINFO,MVOPEN,MVPOSTER,MVSTATE)
+		INSERT INTO MOVIES
 		VALUES(#{mvcode},#{mvtitle},#{mvdirector},#{mvactors},#{mvgenre},#{mvinfo},TO_DATE(#{mvopen},'YYYY-MM-DD'),#{mvposter},'1')
+	</insert>
+	<select id="selectMaxMvCode">
+		SELECT NVL(MAX(MVCODE),'MV00000') FROM MOVIES
+	</select>
+	<select id="selectMaxThcode">
+		SELECT NVL(MAX(THCODE),'TH00000') FROM THEATERS
+	</select>
+	<insert id="insertThValue">
+		INSERT INTO THEATERS(THCODE, THNAME, THADDR, THTEL, THINFO, THIMG) VALUES(#{thcode},#{thname},#{thaddr},#{thtel},#{thinfo},#{thimg})
+	</insert>
+	<insert id="insertSchedule">
+		INSERT INTO SCHEDULES 
+		VALUE((SELECT MVCODE FORM MOVIES WHERE MVTITLE = #{mvcode}), 
+			(SELECT THCODE FORM THEATERS WHERE THNAME = #{thcode}), 
+			#{schall}, 
+			TO_DATE(#{scdate}, 'YYYYMMDD HH:24:MI:SS')
+			)
 	</insert>
 	</mapper>

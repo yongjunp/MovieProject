@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import com.MovieProject.Dao.AdminDao;
 import com.MovieProject.Dto.Movie;
+import com.MovieProject.Dto.Schedule;
 import com.MovieProject.Dto.Theaters;
 
 @Service
@@ -147,7 +148,7 @@ public class AdminService {
 		System.out.println("AdminService - getCgvTheaterUrls() 호출");
 		ChromeOptions options = new ChromeOptions(); // Selenium을 사용하기 위한 기본적인 크롬을 열어주는 코드
 		options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
-//		options.addArguments("headless");
+		options.addArguments("headless");
 		WebDriver driver = new ChromeDriver(options);
 		String cgvtheaterUrl = "http://www.cgv.co.kr/theaters/";
 		driver.get(cgvtheaterUrl);
@@ -171,7 +172,7 @@ public class AdminService {
 
 		ChromeOptions options = new ChromeOptions(); // Selenium을 사용하기 위한 기본적인 크롬을 열어주는 코드
 		options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
-//		options.addArguments("headless");
+		options.addArguments("headless");
 		WebDriver driver = new ChromeDriver(options);
 		ArrayList<Theaters> thList = new ArrayList<Theaters>();
 		for (String url : theaterUrls) {
@@ -260,37 +261,73 @@ public class AdminService {
 		/* SELENIUM */
 		ChromeOptions options = new ChromeOptions(); // Selenium을 사용하기 위한 기본적인 크롬을 열어주는 코드
 		options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
-//		options.addArguments("headless");
+		options.addArguments("headless");
 		WebDriver driver = new ChromeDriver(options);
-
+		ArrayList<Schedule> ScheduleList = new ArrayList<Schedule>();
+		
 		for (String thurl : theaterUrls) {
-			driver.get(thurl);// SELENIUM - Chrome 극장 페이지로 접속
-			// SELENIUM - 극장 페이지 내부에 있는 스케쥴 프레임으로 변경
-			driver.switchTo().frame(driver.findElement(By.cssSelector("#ifrm_movie_time_table")));
+			driver.get(thurl);// SELENIUM - Chrome 극장 페이지로 접속				
+			try { /* 극장별 스케쥴 수집 - try-catch 시작*/
+				String thname = driver.findElement(By.cssSelector("#contents > div.wrap-theater > div.sect-theater > h4 > span")).getText();
+				
+				// SELENIUM - 극장 페이지 내부에 있는 스케쥴 프레임으로 변경
+				driver.switchTo().frame(driver.findElement(By.cssSelector("#ifrm_movie_time_table")));
 //			#slider > div:nth-child(1) > ul > li
-			List<WebElement> dayList = driver.findElements(By.cssSelector("#slider > div:nth-child(1) > ul > li"));
-//			for (WebElement day : dayList) {
-//					
-//				
-//				break;
-//			}
-			
-			/* 8월 24일 */
-//			body > div > div.sect-showtimes > ul > li
-			List<WebElement> showtimes = driver.findElements(By.cssSelector("body > div > div.sect-showtimes > ul > li"));
-			System.out.println("showtimes.size() : " + showtimes.size());
-			for(WebElement showtime : showtimes) {
-				String mvtitle = showtime.findElement(By.cssSelector("div > div.info-movie > a > strong")).getText();
-				System.out.println("mvtitle : " + mvtitle);
-				List<WebElement> timehalls = showtime.findElements(By.cssSelector("div.col-times>div.type-hall"));
-				System.out.println("timehalls : "+ timehalls.size());
-			}
-			
+				List<WebElement> dayList = driver.findElements(By.cssSelector("#slider > div:nth-child(1) > ul > li"));
+				for (int i = 0; i < dayList.size();i++) { /*날짜별 스케쥴 수집 - for 시작*/
+					if(i>0) {
+						driver.findElement(By.cssSelector("#slider > div:nth-child(1) > ul > li.on+li")).click();					
+					}
+					
+					String mm = driver.findElement(By.cssSelector("#slider > div:nth-child(1) > ul > li.on > div > a > span")).getText().replace("월", "");
+					String dd = driver.findElement(By.cssSelector("#slider > div:nth-child(1) > ul > li.on > div > a > strong")).getText();
+					// showtimes : 상영스케쥴표 영화 목록
+					List<WebElement> showtimes = driver.findElements(By.cssSelector("body > div > div.sect-showtimes > ul > li"));
+					for(WebElement showtime : showtimes) { /*날짜별 스케쥴 수집 - for시작*/
+						String mvtitle = showtime.findElement(By.cssSelector("div > div.info-movie > a > strong")).getText();
+						
+						//예매 가능한 상영관
+						List<WebElement> type_halls = showtime.findElements(By.cssSelector("div.col-times>div.type-hall"));
+						for(WebElement hall : type_halls) {/*상영관별 스케쥴 수집 - for 시작*/
+							//예매 가능한 상영관 이름
+							String hallName = hall.findElement(By.cssSelector("div.info-hall > ul > li:nth-child(2)")).getText();
+							//예매 가능한 시간
+							List<WebElement> timeList = hall.findElements(By.cssSelector("div.info-timetable > ul > li > a > em"));
+							for(WebElement time : timeList) {/*시간별 스케쥴 수집 - for 시작*/
+								String hallTime = time.getText();
+								Schedule sc = new Schedule();
+								sc.setMvcode(mvtitle);
+								sc.setThcode(thname);
+								sc.setSchall(hallName);
+								sc.setScdate("2023"+mm+dd + " " + hallTime);
+								
+								ScheduleList.add(sc);
+							}/*시간별 스케쥴 수집 - for 종료*/
+							
+						}/*상영관별 스케쥴 수집 - for 종료*/
+						
+					}/*날짜별 스케쥴 수집 - for 종료*/
+					
+				}/*날짜별 스케쥴 수집 - for 종료*/
+				
+			}catch (Exception e) {
+
+			}/* 극장별 스케쥴 수집 - try-catch 종료*/
 			break;
 		}
-
+		
+		int insertCount = 0;
+		for(Schedule sc : ScheduleList) {
+			try {
+				int insertResult = addao.insertSchedule(sc);
+				insertCount += insertResult;
+			} catch (Exception e) {
+				continue;
+			}
+		}
+		
 		driver.quit();
-		return 0;
+		return insertCount;
 	}
 
 }
