@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
@@ -9,3 +10,13 @@
 	</insert>
 	
 </mapper>
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<mapper namespace="com.MovieProject.Dao.AdminDao">
+		<select id="selectMaxMvCode">
+		select NVL(max(mvcode), 'MV00000') from movies
+		</select>
+	</mapper>
+>>>>>>> f743c0095183b5770c84706299198e48df3b75f1

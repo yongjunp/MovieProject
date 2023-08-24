@@ -14,6 +14,7 @@ public class AdminController {
 	
 	@Autowired
 	private AdminService adsvc;
+<<<<<<< HEAD
 	
 	@RequestMapping(value="/getCgvMovieInfo")
 	public ModelAndView getCgvMovieInfo() throws IOException {
@@ -52,4 +53,18 @@ public class AdminController {
 		
 		return mav;
 	}
+=======
+	private ModelAndView mav;
+	
+	@RequestMapping(value="/getCgvMovieInfo")
+	public ModelAndView getCgvMovieInfo() throws IOException {
+		System.out.println("영화정보 수집 요청 - /getCgvMovieInfo");
+		mav = new ModelAndView();
+		//추가된 영화 개수
+		int addCount = adsvc.addCgvMovie();
+		System.out.println("추가 : " + addCount);
+		return null;
+	}
+
+>>>>>>> f743c0095183b5770c84706299198e48df3b75f1
 }

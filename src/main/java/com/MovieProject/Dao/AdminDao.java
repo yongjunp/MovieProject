@@ -1,5 +1,6 @@
 package com.MovieProject.Dao;
 
+<<<<<<< HEAD
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 
@@ -22,4 +23,10 @@ public interface AdminDao {
 
 	
 
+=======
+public interface AdminDao {
+
+	String selectMaxMvCode();
+
+>>>>>>> f743c0095183b5770c84706299198e48df3b75f1
 }
