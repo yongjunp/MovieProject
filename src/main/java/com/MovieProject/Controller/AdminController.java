@@ -15,8 +15,6 @@ public class AdminController {
 	@Autowired
 	private AdminService adsvc;
 	
-	private ModelAndView mav;
-	
 	@RequestMapping(value="/getCgvMovieInfo")
 	public ModelAndView getCgvMovieInfo() throws IOException {
 		ModelAndView mav = new ModelAndView();

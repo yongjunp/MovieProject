@@ -269,13 +269,23 @@ public class AdminService {
 			driver.switchTo().frame(driver.findElement(By.cssSelector("#ifrm_movie_time_table")));
 //			#slider > div:nth-child(1) > ul > li
 			List<WebElement> dayList = driver.findElements(By.cssSelector("#slider > div:nth-child(1) > ul > li"));
-			
-			/* 8월 24일 */
 //			for (WebElement day : dayList) {
 //					
 //				
 //				break;
 //			}
+			
+			/* 8월 24일 */
+//			body > div > div.sect-showtimes > ul > li
+			List<WebElement> showtimes = driver.findElements(By.cssSelector("body > div > div.sect-showtimes > ul > li"));
+			System.out.println("showtimes.size() : " + showtimes.size());
+			for(WebElement showtime : showtimes) {
+				String mvtitle = showtime.findElement(By.cssSelector("div > div.info-movie > a > strong")).getText();
+				System.out.println("mvtitle : " + mvtitle);
+				List<WebElement> timehalls = showtime.findElements(By.cssSelector("div.col-times>div.type-hall"));
+				System.out.println("timehalls : "+ timehalls.size());
+			}
+			
 			break;
 		}
 
