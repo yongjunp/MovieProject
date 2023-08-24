@@ -2,39 +2,29 @@ package com.MovieProject.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
-<<<<<<< HEAD
 import java.util.List;
-=======
->>>>>>> f743c0095183b5770c84706299198e48df3b75f1
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-<<<<<<< HEAD
 import org.openqa.selenium.By;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-=======
->>>>>>> f743c0095183b5770c84706299198e48df3b75f1
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.MovieProject.Dao.AdminDao;
 import com.MovieProject.Dto.Movie;
-<<<<<<< HEAD
 import com.MovieProject.Dto.Theaters;
-=======
->>>>>>> f743c0095183b5770c84706299198e48df3b75f1
 
 @Service
 public class AdminService {
 
 	@Autowired
-<<<<<<< HEAD
 	private AdminDao addao;
 
 	/* addCgvMovie() 시작점 */
@@ -188,167 +178,109 @@ public class AdminService {
 			driver.get(url);
 			try {
 				Theaters theaters = new Theaters();
-				
+
 				WebElement titleElement = driver
-						.findElement(By.cssSelector("#contents > div.wrap-theater > div.sect-theater > h4 > span"));				
+						.findElement(By.cssSelector("#contents > div.wrap-theater > div.sect-theater > h4 > span"));
 				String thname = titleElement.getText();
-				System.out.println("극장 이름 : "+thname);
+				System.out.println("극장 이름 : " + thname);
 				theaters.setThname(thname);
-				
-				WebElement addrElement = driver.findElement(By.cssSelector("#contents > div.wrap-theater > div.sect-theater > div > div.box-contents > div.theater-info > strong"));
+
+				WebElement addrElement = driver.findElement(By.cssSelector(
+						"#contents > div.wrap-theater > div.sect-theater > div > div.box-contents > div.theater-info > strong"));
 				String thaddr = addrElement.getText();
 				thaddr = thaddr.replace("위치/주차 안내 >", "");
-				thaddr = thaddr.split("\n")[0]; //줄바꿈을 기준으로 0번 인덱스에 있는 것을 고른다.
-				/* Console 출력창 예시
-				 주소 : 서울시 중랑구 상봉동 79-9 상봉듀오트리스 B2F
-					서울시 중랑구 상봉로 131 (상봉동)
-				
-				-- split코드를 추가 한 후의 출력	
-					
-				주소 : 서울시 중랑구 상봉동 79-9 상봉듀오트리스 B2F
+				thaddr = thaddr.split("\n")[0]; // 줄바꿈을 기준으로 0번 인덱스에 있는 것을 고른다.
+				/*
+				 * Console 출력창 예시 주소 : 서울시 중랑구 상봉동 79-9 상봉듀오트리스 B2F 서울시 중랑구 상봉로 131 (상봉동)
+				 * 
+				 * -- split코드를 추가 한 후의 출력
+				 * 
+				 * 주소 : 서울시 중랑구 상봉동 79-9 상봉듀오트리스 B2F
 				 */
-				System.out.println("주소 : "+thaddr);
+				System.out.println("주소 : " + thaddr);
 				theaters.setThaddr(thaddr);
-				
-				WebElement telElement = driver.findElement(By.cssSelector("#contents > div.wrap-theater > div.sect-theater > div > div.box-contents > div.theater-info > span.txt-info > em:nth-child(1)"));
+
+				WebElement telElement = driver.findElement(By.cssSelector(
+						"#contents > div.wrap-theater > div.sect-theater > div > div.box-contents > div.theater-info > span.txt-info > em:nth-child(1)"));
 				String thtel = telElement.getText();
-				System.out.println("전화번호 : "+thtel);
+				System.out.println("전화번호 : " + thtel);
 				theaters.setThtel(thtel);
-				
-				WebElement infoElement = driver.findElement(By.cssSelector("#contents > div.wrap-theater > div.sect-theater > div > div.box-contents > div.theater-info > span.txt-info > em:nth-child(2)"));
+
+				WebElement infoElement = driver.findElement(By.cssSelector(
+						"#contents > div.wrap-theater > div.sect-theater > div > div.box-contents > div.theater-info > span.txt-info > em:nth-child(2)"));
 				String thinfo = infoElement.getText();
-				System.out.println("정보 : "+thinfo);
+				System.out.println("정보 : " + thinfo);
 				theaters.setThinfo(thinfo);
-				
+
 				WebElement imgElement = driver.findElement(By.cssSelector("#theater_img_container > img"));
 				String thimg = imgElement.getAttribute("src");
-				System.out.println("이미지 : "+thimg);
+				System.out.println("이미지 : " + thimg);
 				theaters.setThimg(thimg);
-				
-				thList.add(theaters); //ArrayList<Theaters>의 thList에 theaters 추가
-				
+
+				thList.add(theaters); // ArrayList<Theaters>의 thList에 theaters 추가
+
 			} catch (Exception e) {
 				continue;
 			}
 
 		}
-		//극장 정보 202개 수집
-		System.out.println("thList.size() : "+thList.size());
-		//DB - THEATERS 테이블 INSERT
-		
-		//THEATERS 테이블 THCODE 최대값 조회 >> TH00000
+		// 극장 정보 202개 수집
+		System.out.println("thList.size() : " + thList.size());
+		// DB - THEATERS 테이블 INSERT
+
+		// THEATERS 테이블 THCODE 최대값 조회 >> TH00000
 		String selectMaxThcode = addao.selectMaxThcode();
-		
+
 		int insertThCount = 0;
-		for(Theaters theaters : thList) {
+		for (Theaters theaters : thList) {
 			String thCode = genCode(selectMaxThcode);
-			
-			
+
 			theaters.setThcode(thCode);
 			System.out.println(theaters);
-			//Insert
-			
+			// Insert
+
 			try {
 				int insertThValue = addao.insertThValue(theaters);
-				insertThCount += insertThValue; 
+				insertThCount += insertThValue;
 				selectMaxThcode = thCode;
 			} catch (Exception e) {
 				continue;
 			}
 		}
 
-		
-		
 		driver.quit();
 		return insertThCount;
 	}
 
 	public int addCgvScheduls() {
 		System.out.println("AdminService - add CgvScheduls() 호출");
-		//극장 페이지 URL 수집 기능 호출
+		// 극장 페이지 URL 수집 기능 호출
 		ArrayList<String> theaterUrls = getCgvTheaterUrls();
-		
-		/* SELENIUM*/
+
+		/* SELENIUM */
 		ChromeOptions options = new ChromeOptions(); // Selenium을 사용하기 위한 기본적인 크롬을 열어주는 코드
 		options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
 //		options.addArguments("headless");
 		WebDriver driver = new ChromeDriver(options);
-		
-		for(String thurl : theaterUrls) {
-			driver.get(thurl);// SELENIUM - Chrome 극장 페이지로 접속 
+
+		for (String thurl : theaterUrls) {
+			driver.get(thurl);// SELENIUM - Chrome 극장 페이지로 접속
 			// SELENIUM - 극장 페이지 내부에 있는 스케쥴 프레임으로 변경
 			driver.switchTo().frame(driver.findElement(By.cssSelector("#ifrm_movie_time_table")));
 //			#slider > div:nth-child(1) > ul > li
 			List<WebElement> dayList = driver.findElements(By.cssSelector("#slider > div:nth-child(1) > ul > li"));
-			for(WebElement day : dayList) {
-				
-			}
+			
+			/* 8월 24일 */
+//			for (WebElement day : dayList) {
+//					
+//				
+//				break;
+//			}
 			break;
 		}
-		
+
 		driver.quit();
 		return 0;
 	}
-	
 
-=======
-	private AdminDao adminDao;
-	
-	public int addCgvMovie() throws IOException {
-		System.out.println("AdminService - addCgvMovies 호출");
-		//cgv 영화 정보 수집
-		// Jsoup 사용 
-		// 무비차트 접속 >> 영화 상세 페이지 URL
-		// 영화 상세 페이지 접속 >> 영화 상세 정보 수집
-		Document doc = Jsoup.connect("http://www.cgv.co.kr/movies/?lt=1&ft=0").get();
-		Elements urlItems = doc.select("div.sect-movie-chart div.box-image>a");
-		ArrayList<Movie> mvList = new ArrayList<Movie>();
-		for(Element url : urlItems) {
-			String detailUrl = "https://www.cgv.co.kr/" + url.attr("href");
-			
-			Movie mv = new Movie();
-			Document mvdoc = Jsoup.connect(detailUrl).get();
-			Elements mvitem = mvdoc.select("div.sect-base-movie");
-			String mvposter = mvitem.select("div.box-image>a").attr("href");
-			mv.setMvposter(mvposter);
-			
-			Elements mvitem_box = mvitem.select("div.box-contents");
-			String mvtitle = mvitem_box.select("div.title>strong").text();
-			mv.setMvtitle(mvtitle);
-			
-			String mvdirector = mvitem_box.select("div.spec > dl > dd:nth-child(2)").text();
-			mv.setMvdirector(mvdirector);
-			
-			String mvactors = mvitem_box.select("div.spec>dl>dd.on").get(0).text();
-			mv.setMvactors(mvactors);
-			
-			String mvgerne = mvitem_box.select("div.spec>dl>dd.on").get(0).nextElementSibling().text();
-			mv.setMvgenre(mvgerne);
-			
-			String mvinfo = mvitem_box.select("div.spec>dl>dd.on").get(1).text();
-			mv.setMvinfo(mvinfo);
-			
-			String mvopen = mvitem_box.select("div.spec>dl>dd.on").get(2).text();
-			mvopen = mvopen.substring(0,10);
-			mv.setMvopen(mvopen);
-			mvList.add(mv);
-		}
-		
-		// mvList >> 영화정보 19개 수집
-		
-		// DB - MOVIES 테이블 INSERT
-		// MOVIES 테이블 MVCODE 최대값 조회
-		
-		String maxMvcode = adminDao.selectMaxMvCode();
-		System.out.println("maxMvcode : " + maxMvcode);
-		
-		for(Movie mov : mvList) {
-			//1. 영화코드 생성
-			
-			//2. MOVIE 테이블 INSERT
-		}
-		return mvList.size();
-	}
-
->>>>>>> f743c0095183b5770c84706299198e48df3b75f1
 }

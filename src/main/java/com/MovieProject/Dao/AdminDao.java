@@ -1,6 +1,5 @@
 package com.MovieProject.Dao;
 
-<<<<<<< HEAD
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 
@@ -19,14 +18,4 @@ public interface AdminDao {
 
 	@Insert("INSERT INTO THEATERS(THCODE, THNAME, THADDR, THTEL, THINFO, THIMG) VALUES(#{thcode},#{thname},#{thaddr},#{thtel},#{thinfo},#{thimg})")
 	int insertThValue(Theaters theaters);
-
-
-	
-
-=======
-public interface AdminDao {
-
-	String selectMaxMvCode();
-
->>>>>>> f743c0095183b5770c84706299198e48df3b75f1
 }
