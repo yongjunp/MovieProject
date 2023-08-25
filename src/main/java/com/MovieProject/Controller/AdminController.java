@@ -1,12 +1,14 @@
 package com.MovieProject.Controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.MovieProject.Dto.Movie;
 import com.MovieProject.Service.AdminService;
 
 @Controller
@@ -14,6 +16,16 @@ public class AdminController {
 	
 	@Autowired
 	private AdminService adsvc;
+	
+	@RequestMapping(value="/mapperTest")
+	public ModelAndView mapperTest(String thcode) {
+		System.out.println("mapperTest() 호출");
+		ModelAndView mav = new ModelAndView();
+		adsvc.mapperText_Movie(thcode);
+		
+		mav.setViewName("redirect:/");
+		return mav;
+	}
 	
 	@RequestMapping(value="/getCgvMovieInfo")
 	public ModelAndView getCgvMovieInfo() throws IOException {

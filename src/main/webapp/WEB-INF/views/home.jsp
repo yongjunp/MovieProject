@@ -15,5 +15,9 @@
 	<a href="/getCgvTheaterInfo">CGV 극장 정보 수집</a>
 	<br><br>
 	<a href="/getCgvScheduleInfo">CGV 상영 시간표 수집</a>
+	<form action="/mapperTest" method="get">
+	<input type = "text" name ="thcode" placeholder="극장코드">
+	<input type="submit" value="극장선택">
+	</form>
 </body>
 </html>

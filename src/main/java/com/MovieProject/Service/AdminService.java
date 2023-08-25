@@ -261,7 +261,7 @@ public class AdminService {
 		/* SELENIUM */
 		ChromeOptions options = new ChromeOptions(); // Selenium을 사용하기 위한 기본적인 크롬을 열어주는 코드
 		options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
-		options.addArguments("headless");
+//		options.addArguments("headless");
 		WebDriver driver = new ChromeDriver(options);
 		ArrayList<Schedule> ScheduleList = new ArrayList<Schedule>();
 		
@@ -300,6 +300,7 @@ public class AdminService {
 								sc.setThcode(thname);
 								sc.setSchall(hallName);
 								sc.setScdate("2023"+mm+dd + " " + hallTime);
+								System.out.println(sc.getScdate());
 								
 								ScheduleList.add(sc);
 							}/*시간별 스케쥴 수집 - for 종료*/
@@ -313,7 +314,6 @@ public class AdminService {
 			}catch (Exception e) {
 
 			}/* 극장별 스케쥴 수집 - try-catch 종료*/
-			break;
 		}
 		
 		int insertCount = 0;
@@ -328,6 +328,15 @@ public class AdminService {
 		
 		driver.quit();
 		return insertCount;
+	}
+
+	public void mapperText_Movie(String thcode) {
+		System.out.println("service mapperText_Movie()");
+		ArrayList<Movie> movList = addao.selectMapperTest(thcode);
+		
+		ArrayList<Movie> movList2 = addao.selectMapperTest(null);
+		System.out.println("극장선택0" +movList.size());
+		System.out.println("극장선택x"+movList2.size());
 	}
 
 }

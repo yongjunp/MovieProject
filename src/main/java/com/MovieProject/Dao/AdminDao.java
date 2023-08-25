@@ -1,5 +1,7 @@
 package com.MovieProject.Dao;
 
+import java.util.ArrayList;
+
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 
@@ -18,4 +20,6 @@ public interface AdminDao {
 	int insertThValue(Theaters theaters);
 
 	int insertSchedule(Schedule sc);
+
+	ArrayList<Movie> selectMapperTest(String thcode);
 }
