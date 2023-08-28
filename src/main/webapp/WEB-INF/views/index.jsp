@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-    <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
         <html lang="en">
 
         <head>
@@ -19,7 +19,7 @@
             <!-- Responsive navbar-->
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div class="container">
-                    <a class="navbar-brand" href="${pageContext/request/contextPath}/">MOVIES PROJECT</a>
+                    <a class="navbar-brand" href="/">MOVIES PROJECT</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation"><span
@@ -57,17 +57,15 @@
 
                         <!-- Nested row for non-featured blog posts-->
                         <div class="row">
-                            <c:forEach befin="1" end="6" step="1">
+                            <c:forEach begin="1" end="6" step="1">
                                 <div class="col-lg-4">
                                     <!-- Blog post-->
                                     <div class="card mb-4">
                                         <a href="#!"><img class="card-img-top" src="https://img.cgv.co.kr/Movie/Thumbnail/Poster/000087/87175/87175_320.jpg" alt="..." /></a>
                                         <div class="card-body">
-                                            <div class="small text-muted">January 1, 2023</div>
-                                            <h2 class="card-title h4">Post Title</h2>
-                                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing
-                                                elit. Reiciendis aliquid atque, nulla.</p>
-                                            <a class="btn btn-primary" href="#!">Read more →</a>
+                                            <div class="small text-muted">예매율</div>
+                                            <h2 class="card-title h4">영화제목 + 개봉일</h2>
+                                            <a class="btn btn-danger" href="#!">예매하기</a>
                                         </div>
                                     </div>
                                     <!-- Blog post-->
@@ -76,20 +74,7 @@
 
                         </div>
                         <!-- Pagination-->
-                        <nav aria-label="Pagination">
-                            <hr class="my-0" />
-                            <ul class="pagination justify-content-center my-4">
-                                <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1"
-                                        aria-disabled="true">Newer</a></li>
-                                <li class="page-item active" aria-current="page"><a class="page-link" href="#!">1</a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                                <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
-                                <li class="page-item"><a class="page-link" href="#!">15</a></li>
-                                <li class="page-item"><a class="page-link" href="#!">Older</a></li>
-                            </ul>
-                        </nav>
+                        
                     </div>
                     <!-- Side widgets-->
                     <div class="col-lg-4">
@@ -106,20 +91,20 @@
                         </div>
                         <!-- Categories widget-->
                         <div class="card mb-4">
-                            <div class="card-header">Categories</div>
+                            <div class="card-header">회원메뉴</div>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <ul class="list-unstyled mb-0">
-                                            <li><a href="#!">Web Design</a></li>
+                                            <li><a href="#!">예매내역</a></li>
                                             <li><a href="#!">HTML</a></li>
                                             <li><a href="#!">Freebies</a></li>
                                         </ul>
                                     </div>
                                     <div class="col-sm-6">
                                         <ul class="list-unstyled mb-0">
-                                            <li><a href="#!">JavaScript</a></li>
-                                            <li><a href="#!">CSS</a></li>
+                                            <li><a href="#!">회원정보</a></li>
+                                            <li><a href="#!">로그아웃</a></li>
                                             <li><a href="#!">Tutorials</a></li>
                                         </ul>
                                     </div>
