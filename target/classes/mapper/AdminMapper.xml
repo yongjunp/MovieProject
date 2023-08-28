@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.MovieProject.Dao.AdminDao">
+	<insert id="insertMovie">
+		INSERT INTO MOVIES
+		VALUES(#{mvcode},#{mvtitle},#{mvdirector},#{mvactors},#{mvgenre},#{mvinfo},TO_DATE(#{mvopen},'YYYY-MM-DD'),#{mvposter},'1')
+	</insert>
+	<select id="selectMaxMvCode">
+		SELECT NVL(MAX(MVCODE),'MV00000') FROM MOVIES
+	</select>
+	<select id="selectMaxThcode">
+		SELECT NVL(MAX(THCODE),'TH00000') FROM THEATERS
+	</select>
+	<insert id="insertThValue">
+		INSERT INTO THEATERS(THCODE, THNAME, THADDR, THTEL,
+		THINFO, THIMG)
+		VALUES(#{thcode},#{thname},#{thaddr},#{thtel},#{thinfo},#{thimg})
+	</insert>
+	<insert id="insertSchedule">
+		INSERT INTO SCHEDULES
+		VALUES((SELECT MVCODE FROM MOVIES WHERE MVTITLE = #{mvcode}),
+		(SELECT THCODE FROM THEATERS WHERE THNAME = #{thcode}),
+		#{schall},
+		TO_DATE(#{scdate}, 'YYYYMMDD HH24:MI:SS')
+		)
+	</insert>
+	<select id="selectMapperTest" resultType="mov">
+		select *
+		from movies
+		where mvcode in (select mvcode
+						 from schedules
+						 <if test="thcode != null and thcode.length > 0">
+						 where thcode = #{thcode}
+						 </if>
+						 group by mvcode)
+		and mvstate = '1'
+	</select>
+</mapper>
