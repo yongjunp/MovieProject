@@ -15,28 +15,7 @@
         </head>
 
         <body>
-            <!-- 메뉴시작 -->
-            <!-- Responsive navbar-->
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <div class="container">
-                    <a class="navbar-brand" href="/">MOVIES PROJECT</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation"><span
-                            class="navbar-toggler-icon"></span></button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                            <li class="nav-item"><a class="nav-link" href="#">영화</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#!">예매</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#!">메뉴1</a></li>
-                            <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Blog</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-            <!-- 메뉴 종료 -->
-
-
+        	<%@ include file="/WEB-INF/views/include/menu.jsp" %>
             <!-- Page header with logo and tagline-->
             <header class="py-5 bg-light border-bottom mb-4">
                 <div class="container">
@@ -46,8 +25,6 @@
                     </div>
                 </div>
             </header>
-
-
             <!-- Page content-->
             <div class="container">
                 <div class="row">
@@ -57,14 +34,14 @@
 
                         <!-- Nested row for non-featured blog posts-->
                         <div class="row">
-                            <c:forEach begin="1" end="6" step="1">
-                                <div class="col-lg-4">
+                            <c:forEach items="${mvList }" var="mv">
+                                <div class="cal-md-6 col-lg-4">
                                     <!-- Blog post-->
                                     <div class="card mb-4">
-                                        <a href="#!"><img class="card-img-top" src="https://img.cgv.co.kr/Movie/Thumbnail/Poster/000087/87175/87175_320.jpg" alt="..." /></a>
+                                        <a href="/detailMovie?mvcode=${mv.mvcode }"><img class="card-img-top" src="${mv.mvposter }" alt="..." /></a>
                                         <div class="card-body">
                                             <div class="small text-muted">예매율</div>
-                                            <h2 class="card-title h4">영화제목 + 개봉일</h2>
+                                            <h2 class="card-title h4" title="${mv.mvtitle }" style="overflow:hidden; white-space:nowrap;">${mv.mvtitle } + ${mv.mvopen}</h2>
                                             <a class="btn btn-danger" href="#!">예매하기</a>
                                         </div>
                                     </div>

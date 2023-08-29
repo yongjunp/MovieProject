@@ -7,5 +7,6 @@
 	</typeAliases>
 	<mappers>
 		<mapper resource="mapper/AdminMapper.xml"/>
+		<mapper resource="mapper/MovieMapper.xml"/>
 	</mappers>
 </configuration>

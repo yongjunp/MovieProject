@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.MovieProject.Dao.MovieDao">
+	<select id="selectMvList" resultType="mov">
+		select *
+		from (select mvcode, mvtitle, mvdirector, mvactors, mvinfo, to_char(mvopen, 'yyyy-mm-dd') as mvopen, mvposter 
+		from movies
+		order by mvopen desc)
+		where rownum between 1 and 6
+	</select>
+	<select id="selectMovie" resultType="mov">
+		select *
+		from movies
+		where mvcode = #{mvcode}
+	</select>
+</mapper>
