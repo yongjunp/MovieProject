@@ -9,5 +9,7 @@ public interface MovieDao {
 	ArrayList<Movie> selectMvList();
 
 	Movie selectMovie(String mvcode);
+	
+	ArrayList<Movie> selectMovieList();
 
 }

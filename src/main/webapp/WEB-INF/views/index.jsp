@@ -12,6 +12,40 @@
             <link rel="icon" type="image/x-icon" href="/resources/user/assets/favicon.ico" />
             <!-- Core theme CSS (includes Bootstrap)-->
             <link href="/resources/css/styles.css" rel="stylesheet" />
+            <style type="text/css">
+            	.ageInfo{
+            		position: absolute;
+            		top: 5px;
+            		left: 5px;
+            		background-color: white;
+            		text-align: center;
+			 	   border-radius: 12px;
+			 	   padding: 5px;
+				    font-weight: bold;
+				    color: white;
+            	}
+            	.gradeAll{
+        		background-color: green;
+        		}
+        		.grade12{
+        		background-color: yellow;
+       		 	}
+       	 		.grade15{
+       		 	background-color: coral;
+        		}
+        		.grade19{
+        		background-color: red;
+        		}
+        		.rankMov{
+        			background-color:red;
+        			margin-bottom: 5px;
+        			border-radius: 5px;
+        			text-align: center;
+        			color: white;
+        			font-size:18px;
+        			font-weight:bold;
+        		}
+            </style>
         </head>
 
         <body>
@@ -34,11 +68,13 @@
 
                         <!-- Nested row for non-featured blog posts-->
                         <div class="row">
-                            <c:forEach items="${mvList }" var="mv">
+                            <c:forEach items="${mvList }" var="mv" varStatus="status">
                                 <div class="cal-md-6 col-lg-4">
+                                <div class="rankMov">No.${status.index+1 }</div>
                                     <!-- Blog post-->
                                     <div class="card mb-4">
                                         <a href="/detailMovie?mvcode=${mv.mvcode }"><img class="card-img-top" src="${mv.mvposter }" alt="..." /></a>
+                                        <span class="ageInfo grade${mv.mvstate }">${mv.mvstate }</span>
                                         <div class="card-body">
                                             <div class="small text-muted">예매율</div>
                                             <h2 class="card-title h4" title="${mv.mvtitle }" style="overflow:hidden; white-space:nowrap;">${mv.mvtitle } + ${mv.mvopen}</h2>
@@ -57,12 +93,10 @@
                     <div class="col-lg-4">
                         <!-- Search widget-->
                         <div class="card mb-4">
-                            <div class="card-header">Search</div>
+                            <div class="card-header" style="text-align:center;">로그인 후 이용 해주세요!</div>
                             <div class="card-body">
                                 <div class="input-group">
-                                    <input class="form-control" type="text" placeholder="Enter search term..."
-                                        aria-label="Enter search term..." aria-describedby="button-search" />
-                                    <button class="btn btn-primary" id="button-search" type="button">Go!</button>
+                                    <button class="btn btn-primary" id="button-search" type="button" style="width:100%;" onclick="location.href='/memberLoginForm'" type="button">로그인</button>
                                 </div>
                             </div>
                         </div>
@@ -81,7 +115,7 @@
                                     <div class="col-sm-6">
                                         <ul class="list-unstyled mb-0">
                                             <li><a href="#!">회원정보</a></li>
-                                            <li><a href="#!">로그아웃</a></li>
+                                            <li><a href="/memberJoinForm">회원가입</a></li>
                                             <li><a href="#!">Tutorials</a></li>
                                         </ul>
                                     </div>
@@ -107,6 +141,9 @@
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
             <!-- Core theme JS-->
             <script src="/resources/js/scripts.js"></script>
+            <script type="text/javascript">
+            	console.log("${mvList.get(0).mvstate}")
+            </script>
         </body>
 
         </html>

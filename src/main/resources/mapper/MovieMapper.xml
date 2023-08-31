@@ -15,4 +15,16 @@
 		from movies
 		where mvcode = #{mvcode}
 	</select>
+	<select id="selectMovieList" resultType="mov">
+	
+		SELECT MVCODE, MVTITLE, MVDIRECTOR, MVACTORS, MVINFO, MVGENRE, TO_CHAR(MVOPEN, 'YYYY-MM-DD')
+			   		  AS MVOPEN, MVPOSTER, MVSTATE
+		FROM MOVIES 
+		WHERE MVCODE IN (SELECT MVCODE 
+						 FROM SCHEDULES
+		 				 WHERE SCDATE > SYSDATE
+		 				 GROUP BY MVCODE)
+		ORDER BY MVOPEN DESC
+		
+	</select>
 </mapper>

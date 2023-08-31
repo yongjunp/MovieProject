@@ -16,6 +16,20 @@ public class MovieController {
 	@Autowired
 	private MovieService mvsvc;
 	
+	@RequestMapping(value="/movieList")
+	public ModelAndView movieList() {
+		System.out.println("movieList - 영화 목록페이지");
+		ModelAndView mav = new ModelAndView();
+		
+		ArrayList<Movie> movieList = mvsvc.getMovieList();
+		System.out.println(movieList);
+		mav.addObject("mvList",movieList);
+		mav.setViewName("movie/MovieList");
+		
+		return mav;
+	}
+	
+	
 	@RequestMapping(value="/detailMovie")
 	public ModelAndView detailMovie(String mvcode) {
 		ModelAndView mav = new ModelAndView();
