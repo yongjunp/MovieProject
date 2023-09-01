@@ -56,11 +56,8 @@
 					<button type="submit" class="btn btn-primary">로그인</button>
 				</form>
 				<div class="row m-1">
-					<a id="kakao-login-btn" href="javascript:loginWithKakao()"> <img
-						src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
-						width="222" alt="카카오 로그인 버튼" />
-					</a>
-					<p id="token-result"></p>
+					<button class="btn btn-warning" type="button" onclick="memberLogin_kakao()">카카오 로그인 버튼
+					</button>
 				</div>
 			</div>
 		</div>
@@ -78,68 +75,99 @@
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	<!-- Core theme JS-->
 	<script src="/resources/js/scripts.js"></script>
+	<!-- 카카오로그인 js -->
 	<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.3.0/kakao.min.js"
-		integrity="sha384-70k0rrouSYPWJt7q9rSTKpiTfX6USlMYjZUtr1Du+9o4cGvhPAWxngdtVZDdErlh"
-		crossorigin="anonymous"></script>
-	<script type="text/javascript">
-			Kakao.init('f27f610181c7185c2861db20210a1bd5');
-			console.log(Kakao.isInitialized());
-			function memberLogin_kakao(){
-				console.log("카카오 계정으로 로그인")
-				Kakao.API.request({
- 				 url: '/member/memberLogin', // 사용자 정보 가져오기
-				})
- 				 .then(function(response) {
- 				   console.log(response)
- 				 })
- 				 .catch(function(error) {
-  				  console.error(error)
-  				})
-			}
-            </script>
-
-
-
-
-</body>
-<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.3.0/kakao.min.js"
 	integrity="sha384-70k0rrouSYPWJt7q9rSTKpiTfX6USlMYjZUtr1Du+9o4cGvhPAWxngdtVZDdErlh"
 	crossorigin="anonymous"></script>
+	<!-- jquery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script>
   Kakao.init('f27f610181c7185c2861db20210a1bd5'); // 사용하려는 앱의 JavaScript 키 입력
-</script>
-
-<script>
-  function loginWithKakao() {
-    Kakao.Auth.authorize({
+  
+  function memberLogin_kakao() {
+	  console.log("카카오 로그인 호출()");
+      Kakao.Auth.authorize({
       redirectUri: 'http://localhost:8080/memberLoginForm',
     });
   }
+   let authCode = '${param.code}';
+   console.log("authCode : "+authCode);
+  if(authCode.length > 0){
+	  console.log("카카오_인가코드 있음");
+	  console.log("인증토큰 요청");
+	  $.ajax({
+		  type:"post",
+		  url:"https://kauth.kakao.com/oauth/token",
+		  contentType:"application/x-www-form-urlencoded;charset=utf-8",
+		  data:{"grant_type":"authorization_code",
+			  "client_id":"3278e8d6e7d5b2347818f47d69d86a42",
+			  "redirect_uri":"http://localhost:8080/memberLoginForm",
+			  "code":authCode},
+		success : function(response){
+			console.log("인증토큰 : "+response.access_token);
+			Kakao.Auth.setAccessToken(response.access_token);
+			
+			Kakao.API.request({
+				  url: '/v2/user/me',
+			})
+				  .then(function(response) {
+					  console.log('카카오 계정 정보');
+					  console.log("id : "+response.id);
+					  console.log("email : "+response.kakao_account.email)
+					  console.log("nickname : "+response.properties.nickname);
+					  console.log("profile_image : "+response.properties.profile_image);
+					  //location.href=""
+					  /* 카카오 계정 정보가 members 테이블에서 조회*/
+					  $.ajax({
+						  type:"get",
+						  url:"/memberLogin_kakao",
+						  data:{"id":response.id},
+						  success:function(checkMember_kakao){
+							  if(checkMember_kakao){
+								  alert('로그인 되었습니다.');
+								  location.href="/";
+							  }else{
+								  let check = confirm('가입된 정보가 없습니다 \n 카카오 계정으로 가입하시겠습니까?');
+								  if(check){
+									  console.log("asd");
+									  memberJoin_kakao(response);
+									  //회원가입 
+								  }
+							  }
+						  }
+					  })
+					  
 
-  // 아래는 데모를 위한 UI 코드입니다.
-  displayToken()
-  function displayToken() {
-    var token = getCookie('authorize-access-token');
-
-    if(token) {
-      Kakao.Auth.setAccessToken(token);
-      Kakao.Auth.getStatusInfo()
-        .then(function(res) {
-          if (res.status === 'connected') {
-            document.getElementById('token-result').innerText
-              = 'login success, token: ' + Kakao.Auth.getAccessToken();
-          }
-        })
-        .catch(function(err) {
-          Kakao.Auth.setAccessToken(null);
-        });
-    }
+			})
+				  .catch(function(error) {
+				    console.log(error);
+			});
+		}
+	  })
   }
 
-  function getCookie(name) {
-    var parts = document.cookie.split(name + '=');
-    if (parts.length === 2) { return parts[1].split(';')[0]; }
-  }
 </script>
+<script type="text/javascript">
+	function memberJoin_kakao(response){
+		$.ajax({
+			  type:"get",
+			  url:"/memberJoin_kakao",
+			  data:{"mid":response.id,
+				  	"memail":response.kakao_account.email,
+				  	"mname":response.properties.nickname,
+				  	"mprofile":response.properties.profile_image},
+		success:function(rs){
+				  if(rs){
+					  alert('카카오 계정으로  회원가입 되었습니다. \n다시 로그인 해주세요!');
+					  location.href="/memberLoginForm";
+				  }else{
+					  console.log("회원가입 실패");
+				  }
+			  }
+			  
+			  })
+	}
+</script>
+</body>
 
 </html>

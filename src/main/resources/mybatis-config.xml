@@ -4,9 +4,11 @@
 <configuration>
 	<typeAliases>
 		<typeAlias type="com.MovieProject.Dto.Movie" alias="mov"/>
+		<typeAlias type="com.MovieProject.Dto.Member" alias="mem"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mapper/AdminMapper.xml"/>
 		<mapper resource="mapper/MovieMapper.xml"/>
+		<mapper resource="mapper/MemberMapper.xml"/>
 	</mappers>
 </configuration>
