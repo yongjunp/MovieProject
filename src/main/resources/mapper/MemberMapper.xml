@@ -6,7 +6,7 @@
 	<select id="selectMemberInfo" resultType="mem">
 		select * from members where mid = #{id}
 	</select>
-	<insert id="insertMembe">
+	<insert id="insertMember">
 		insert into members(mid,mpw,mname,memail,mdate,mprofile,mstate) 
 		<if test="mstate == 'YK'">
 		values(#{mid}, 'kakaoAccount', #{mname}, #{memail}, sysdate, #{mprofile}, #{mstate})
