@@ -53,7 +53,7 @@
  						   <label class="form-check-label" for="exampleCheck1">Check me out</label>
  						 </div>
  						 --%>
-					<button type="submit" class="btn btn-primary">로그인</button>
+					<button type="submit" class="btn btn-primary">로그인</button><button type="button" onclick="location.href='/memberJoinForm'" class="btn">회원가입</button>
 				</form>
 				<div class="row m-1">
 					<button class="btn btn-warning" type="button" onclick="memberLogin_kakao()">카카오 로그인 버튼
@@ -155,7 +155,7 @@
 			  data:{"mid":response.id,
 				  	"memail":response.kakao_account.email,
 				  	"mname":response.properties.nickname,
-				  	"mprofile":response.properties.profile_image},
+				  	"mprofilename":response.properties.profile_image},
 		success:function(rs){
 				  if(rs){
 					  alert('카카오 계정으로  회원가입 되었습니다. \n다시 로그인 해주세요!');

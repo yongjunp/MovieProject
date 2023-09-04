@@ -12,7 +12,10 @@
 		values(#{mid}, 'kakaoAccount', #{mname}, #{memail}, sysdate, #{mprofile}, #{mstate})
 		</if>
 		<if test="mstate == 'YC'">
-		
+		values(#{mid}, #{mpw}, #{mname}, #{memail}, sysdate, #{mprofile}, #{mstate})
 		</if>
 	</insert>
+	<select id="selectMid" resultType="String">
+		select mid from members where mid = #{mid}
+	</select>
 </mapper>

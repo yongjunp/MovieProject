@@ -76,8 +76,29 @@ public class MemberController {
 	public ModelAndView memberJoinForm() {
 		System.out.println("회원가입 페이지 이동 요청");
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("member/MemberRegist");
+		mav.setViewName("member/MemberJoin");
 		return mav;
 		
+	}
+	
+	@RequestMapping(value="/memberJoin")
+	public ModelAndView memberJoin(Member mem, String EmailDomain, String EmailId,HttpSession session) {
+		System.out.println("회원가입 요청");
+		ModelAndView mav = new ModelAndView();
+		mem = msvc.setMprofile(mem, EmailDomain, EmailId, session);
+		System.out.println(mem);
+		int result = msvc.registMember(mem);
+		if(result >0) {
+			mav.setViewName("redirect:/");
+		}else {
+			mav.setViewName("redirect:/memberJoin");
+		}
+		return mav;
+	}
+	@RequestMapping(value="/checkId")
+	public @ResponseBody String checkId(String mid) {
+		System.out.println("아이디 중복확인 요청");
+		String rs = msvc.checkId(mid);
+		return rs;
 	}
 }

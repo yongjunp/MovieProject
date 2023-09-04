@@ -9,4 +9,6 @@ public interface MemberDao {
 	Member selectMemberInfo(@Param("id")String id);
 
 	int insertMember(Member member);
+
+	String selectMid(String mid);
 }
