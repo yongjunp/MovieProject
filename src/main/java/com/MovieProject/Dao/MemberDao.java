@@ -6,7 +6,7 @@ import com.MovieProject.Dto.Member;
 
 public interface MemberDao {
 
-	Member selectMemberInfo(@Param("id")String id);
+	Member selectMemberInfo(Member mem);
 
 	int insertMember(Member member);
 

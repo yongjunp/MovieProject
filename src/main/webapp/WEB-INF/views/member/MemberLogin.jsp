@@ -37,7 +37,7 @@
 				<form action="/memberLogin" method="get">
 					<div class="mb-3">
 						<label for="exampleInputEmail1" class="form-label">아이디</label> <input
-							type="text" name="userPw" class="form-control"
+							type="text" name="userId" class="form-control"
 							id="exampleInputEmail1" aria-describedby="emailHelp">
 						<%--
  						   <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
@@ -121,7 +121,7 @@
 					  $.ajax({
 						  type:"get",
 						  url:"/memberLogin_kakao",
-						  data:{"id":response.id},
+						  data:{"id":response.id, "profile":response.properties.profile_image},
 						  success:function(checkMember_kakao){
 							  if(checkMember_kakao){
 								  alert('로그인 되었습니다.');
@@ -129,7 +129,6 @@
 							  }else{
 								  let check = confirm('가입된 정보가 없습니다 \n 카카오 계정으로 가입하시겠습니까?');
 								  if(check){
-									  console.log("asd");
 									  memberJoin_kakao(response);
 									  //회원가입 
 								  }
@@ -155,7 +154,7 @@
 			  data:{"mid":response.id,
 				  	"memail":response.kakao_account.email,
 				  	"mname":response.properties.nickname,
-				  	"mprofilename":response.properties.profile_image},
+				  	"mprofile":response.properties.profile_image},
 		success:function(rs){
 				  if(rs){
 					  alert('카카오 계정으로  회원가입 되었습니다. \n다시 로그인 해주세요!');
@@ -167,6 +166,7 @@
 			  
 			  })
 	}
+	
 </script>
 </body>
 

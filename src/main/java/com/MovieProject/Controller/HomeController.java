@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.MovieProject.Dto.Member;
 import com.MovieProject.Dto.Movie;
+import com.MovieProject.Service.MemberService;
 import com.MovieProject.Service.MovieService;
 
 /**
@@ -19,6 +21,8 @@ public class HomeController {
 	
 	@Autowired
 	private MovieService mvsvc;
+	@Autowired
+	private MemberService msvc;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView home() {

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.MovieProject.Dto.Member;
 import com.MovieProject.Service.MemberService;
@@ -21,6 +22,8 @@ public class MemberController {
 		System.out.println("로그아웃 요청");
 		session.removeAttribute("loginId");
 		session.removeAttribute("loginName");
+		session.removeAttribute("loginProfile");
+		session.removeAttribute("loginState");
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("redirect:/");
 		return mav;
@@ -30,6 +33,7 @@ public class MemberController {
 	public @ResponseBody boolean memberJoin_kakao(Member member) {
 		System.out.println("카카오 계정 - 회원가입 요청 - /memberJoin_kakao");
 		member.setMstate("YK");
+		System.out.println(member);
 		int result = msvc.registMember_kakao(member);
 		if(result > 0) {
 			return true;			
@@ -39,7 +43,7 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value="/memberLogin_kakao")
-	public @ResponseBody boolean memberLogin_kakao(String id, HttpSession session) {
+	public @ResponseBody boolean memberLogin_kakao(String id, String profile, HttpSession session) {
 		System.out.println("카카오 로그인 요청");
 		System.out.println("카카오 id : "+id);
 		
@@ -52,15 +56,33 @@ public class MemberController {
 			System.out.println("로그인 처리");
 			session.setAttribute("loginId", loginMember.getMid());
 			session.setAttribute("loginName", loginMember.getMname());
+			session.setAttribute("loginProfile", profile);
+			session.setAttribute("loginState", loginMember.getMstate());
 			return true;
 		}
 	}
 	
 	@RequestMapping(value="/memberLogin")
-	public ModelAndView memberLogin(String userId, String userPw){
+	public ModelAndView memberLogin(String userId, String userPw, HttpSession session, RedirectAttributes ra){
 		System.out.println("로그인 요청");
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("redirect:/");
+		Member mem = new Member();
+		mem.setMid(userId);
+		mem.setMpw(userPw);
+		Member loginMember = msvc.getLoginMemberInfo(mem);
+		if(loginMember == null) {
+			mav.setViewName("redirect:/");
+		}else {
+			System.out.println(loginMember);
+			String mstate = loginMember.getMstate().substring(0,1);
+			System.out.println(mstate.equals("Y"));
+			System.out.println(mstate.equals("N"));
+			session.setAttribute("loginId", loginMember.getMid());
+			session.setAttribute("loginName", loginMember.getMname());
+			session.setAttribute("loginProfile", loginMember.getMprofile());
+			session.setAttribute("loginState", loginMember.getMstate());
+			mav.setViewName("redirect:/");
+		}
 		return mav;
 	}
 	

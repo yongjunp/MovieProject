@@ -93,12 +93,43 @@
                     <div class="col-lg-4">
                         <!-- Search widget-->
                         <div class="card mb-4">
-                            <div class="card-header" style="text-align:center;">로그인 후 이용 해주세요!</div>
+                            <c:choose>
+                            	<c:when test="${sessionScope.loginId == null}">
+                            <div class="card-header" style="text-align:center;">
+                            		로그인 후 이용 해주세요!
+                            </div>
                             <div class="card-body">
                                 <div class="input-group">
                                     <button class="btn btn-primary" id="button-search" type="button" style="width:100%;" onclick="location.href='/memberLoginForm'" type="button">로그인</button>
                                 </div>
                             </div>
+                            	</c:when>
+                            	<c:otherwise>
+                            <div class="card-header" style="text-align:center;">
+                            		MOVIE PROJECT
+                            </div>
+                            <div class="card-body">
+                                <div class="input-group" style="display:flex;">
+                               		<c:if test="${sessionScope.loginState == 'YC' }">
+                               		
+                               			<c:if test="${sessionScope.loginProfile == null }">
+                               			<img style="width: 70px; border-radius: 50%; height: 70px; object-fit: contain" src="/resources/memberProfile/defaultProfile.jpg">
+                               			</c:if>
+                               		
+                               			<c:if test="${sessionScope.loginProfile != null }">
+		                        		<img style="width: 70px; border-radius: 50%; height: 70px; object-fit: contain" src="/resources/memberProfile/${sessionScope.loginProfile }">
+                               			</c:if>
+		                        	</c:if>
+		                        	
+		                        	<c:if test="${sessionScope.loginState == 'YK' }">
+		                        	<img style="width: 70px; border-radius: 50%; height: 70px; object-fit: contain" src="${sessionScope.loginProfile }">
+		                        	</c:if>
+		                        	<h2>${sessionScope.loginName}</h2>
+                                </div>
+                            </div>
+                            	
+                            	</c:otherwise>
+                            </c:choose>
                         </div>
                         <!-- Categories widget-->
                         <div class="card mb-4">
@@ -128,7 +159,6 @@
                             <div class="card-body">You can put anything you want inside of these side widgets. They are
                                 easy to use, and feature the Bootstrap 5 card component!</div>
                         </div>
-                        <img src="/resources/memberProfile/defaultProfile.jpg">
                     </div>
                 </div>
             </div>
@@ -143,7 +173,7 @@
             <!-- Core theme JS-->
             <script src="/resources/js/scripts.js"></script>
             <script type="text/javascript">
-            	console.log("${mvList.get(0).mvstate}")
+            console.log('${sessionScope.loginProfile}');
             </script>
         </body>
 

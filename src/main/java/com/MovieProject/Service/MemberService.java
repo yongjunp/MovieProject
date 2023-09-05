@@ -20,7 +20,14 @@ public class MemberService {
 	private MemberDao mdao;
 	public Member getLoginMemberInfo_kakao(String id) {
 		System.out.println("MemberService - getLoginMemberInfo_kakao()");
-		return mdao.selectMemberInfo(id);
+		Member mem = new Member();
+		mem.setMid(id);
+		return mdao.selectMemberInfo(mem);
+	}
+	public Member getLoginMemberInfo(Member mem) {
+		System.out.println("MemberService - getLoginMemberInfo");
+		System.out.println(mem);
+		return mdao.selectMemberInfo(mem);
 	}
 	public int registMember_kakao(Member member) {
 		System.out.println("MemberService - registMember_kakao()호출");
@@ -43,20 +50,17 @@ public class MemberService {
 		if(!mprofiledata.isEmpty()) {
 			System.out.println("첨부파일 O");
 			mprofile = uuid+"_"+mprofiledata.getOriginalFilename();
+			File newFile = new File(savePath, mprofile);//File("경로", "파일이름")
+			try {
+				mprofiledata.transferTo(newFile);
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
-		}else {
-			System.out.println("첨부파일 X");
-			mprofile = "defaultProfile.jpg";
-		}
-		File newFile = new File(savePath, mprofile);//File("경로", "파일이름")
-		try {
-			mprofiledata.transferTo(newFile);
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		mem.setMprofiledata(mprofiledata);
 		mem.setMprofile(mprofile);
@@ -70,5 +74,6 @@ public class MemberService {
 		System.out.println("MemberService - checkId()");
 		return mdao.selectMid(mid);
 	}
+	
 
 }
