@@ -1,7 +1,5 @@
 package com.MovieProject.Dao;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.MovieProject.Dto.Member;
 
 public interface MemberDao {

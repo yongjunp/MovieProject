@@ -130,6 +130,11 @@
             		}
             		return true;
             	}
+            	$(document).ready(function (){
+        			if('${msg}'!=''){
+        				alert('${msg}');
+        			}
+        		})
             </script>
         </body>
 

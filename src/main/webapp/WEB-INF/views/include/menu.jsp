@@ -13,7 +13,12 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath }/movieList">영화</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#!">예매</a></li>
+                            
+                            <c:choose>
+                            	<c:when test="${sessionScope.loginId != null }"><li class="nav-item"><a class="nav-link" href="/ReservePage">예매</a></li></c:when>
+                            	<c:otherwise><li class="nav-item"><a class="nav-link" href="/memberLoginForm">예매</a></li></c:otherwise>
+                            </c:choose>
+                            
                             <c:choose>
                             <c:when test="${sessionScope.loginId == null }">
                             <li class="nav-item"><a class="nav-link" href="/memberLoginForm">로그인</a></li>

@@ -21,8 +21,19 @@ public class HomeController {
 	
 	@Autowired
 	private MovieService mvsvc;
-	@Autowired
-	private MemberService msvc;
+	
+	@RequestMapping(value="/ReservePage")
+	public ModelAndView ReservePage() {
+		System.out.println("영화 예매 페이지 이동");
+		ModelAndView mav = new ModelAndView();
+		
+		//영화 목록
+		
+		//극장 목록
+		
+		mav.setViewName("/movie/ReservePage");
+		return mav;
+	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView home() {

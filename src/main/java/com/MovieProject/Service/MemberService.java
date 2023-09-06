@@ -26,7 +26,6 @@ public class MemberService {
 	}
 	public Member getLoginMemberInfo(Member mem) {
 		System.out.println("MemberService - getLoginMemberInfo");
-		System.out.println(mem);
 		return mdao.selectMemberInfo(mem);
 	}
 	public int registMember_kakao(Member member) {

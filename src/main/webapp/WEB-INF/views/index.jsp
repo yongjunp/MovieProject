@@ -12,6 +12,7 @@
             <link rel="icon" type="image/x-icon" href="/resources/user/assets/favicon.ico" />
             <!-- Core theme CSS (includes Bootstrap)-->
             <link href="/resources/css/styles.css" rel="stylesheet" />
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
             <style type="text/css">
             	.ageInfo{
             		position: absolute;
@@ -174,6 +175,11 @@
             <script src="/resources/js/scripts.js"></script>
             <script type="text/javascript">
             console.log('${sessionScope.loginProfile}');
+            $(document).ready(function (){
+    			if('${msg}'!=''){
+    				alert('${msg}');
+    			}
+    		})
             </script>
         </body>
 

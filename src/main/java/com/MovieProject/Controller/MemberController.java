@@ -71,16 +71,15 @@ public class MemberController {
 		mem.setMpw(userPw);
 		Member loginMember = msvc.getLoginMemberInfo(mem);
 		if(loginMember == null) {
-			mav.setViewName("redirect:/");
+			ra.addFlashAttribute("msg", "로그인에 실패하였습니다.");
+			mav.setViewName("redirect:/memberLoginForm");
 		}else {
-			System.out.println(loginMember);
 			String mstate = loginMember.getMstate().substring(0,1);
-			System.out.println(mstate.equals("Y"));
-			System.out.println(mstate.equals("N"));
 			session.setAttribute("loginId", loginMember.getMid());
 			session.setAttribute("loginName", loginMember.getMname());
 			session.setAttribute("loginProfile", loginMember.getMprofile());
 			session.setAttribute("loginState", loginMember.getMstate());
+			ra.addFlashAttribute("msg","로그인 되었습니다.");
 			mav.setViewName("redirect:/");
 		}
 		return mav;
@@ -108,7 +107,6 @@ public class MemberController {
 		System.out.println("회원가입 요청");
 		ModelAndView mav = new ModelAndView();
 		mem = msvc.setMprofile(mem, EmailDomain, EmailId, session);
-		System.out.println(mem);
 		int result = msvc.registMember(mem);
 		if(result >0) {
 			mav.setViewName("redirect:/");

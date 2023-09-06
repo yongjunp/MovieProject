@@ -34,7 +34,7 @@
 		<div class="card mb-4 mx-auto" style="width: 500px;">
 			<div class="card-body">
 				<div class="card-title">로그인</div>
-				<form action="/memberLogin" method="get">
+				<form action="/memberLogin" method="get" onsubmit="return checkInfo(this)">
 					<div class="mb-3">
 						<label for="exampleInputEmail1" class="form-label">아이디</label> <input
 							type="text" name="userId" class="form-control"
@@ -167,6 +167,28 @@
 			  })
 	}
 	
+</script>
+<script type="text/javascript">
+	function checkInfo(obj){
+		if(obj.userId.value.length == 0){
+			alert("아이디를 입력하세요");
+			obj.userId.focus();
+			return false;
+		}
+		if(obj.userPw.value.length == 0){
+			alert("비밀번호를 입력하세요");
+			obj.userPw.focus();
+			return false;
+		}
+		
+		return true;
+	}
+	
+	 $(document).ready(function (){
+			if('${msg}'!=''){
+				alert('${msg}');
+			}
+		})
 </script>
 </body>
 
