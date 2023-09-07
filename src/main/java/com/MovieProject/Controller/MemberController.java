@@ -74,7 +74,7 @@ public class MemberController {
 			ra.addFlashAttribute("msg", "로그인에 실패하였습니다.");
 			mav.setViewName("redirect:/memberLoginForm");
 		}else {
-			String mstate = loginMember.getMstate().substring(0,1);
+//			String mstate = loginMember.getMstate().substring(0,1);
 			session.setAttribute("loginId", loginMember.getMid());
 			session.setAttribute("loginName", loginMember.getMname());
 			session.setAttribute("loginProfile", loginMember.getMprofile());

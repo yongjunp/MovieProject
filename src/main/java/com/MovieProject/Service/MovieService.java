@@ -7,13 +7,15 @@ import org.springframework.stereotype.Service;
 
 import com.MovieProject.Dao.MovieDao;
 import com.MovieProject.Dto.Movie;
+import com.MovieProject.Dto.Theaters;
+import com.google.gson.Gson;
 
 @Service
 public class MovieService {
 
 	@Autowired 
 	private MovieDao mvdao;
-	
+
 	public ArrayList<Movie> selectMvList() {
 		System.out.println("selectMvList()호출");
 		ArrayList<Movie> mvList = mvdao.selectMvList();
@@ -63,5 +65,18 @@ public class MovieService {
 		
 		return movieList;
 	}
+
+	public String getMvList() {
+		System.out.println("service - getMvList() 호출");
+		ArrayList<Movie> mvList_array = getMovieList();
+		return new Gson().toJson(mvList_array);
+	}
+
+	public String getThList() {
+		System.out.println("service - getThList() 호출");
+		ArrayList<Theaters> thList = mvdao.selectTheaterList();
+		return new Gson().toJson(thList);
+	}
+	
 
 }

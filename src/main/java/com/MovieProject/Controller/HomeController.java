@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.MovieProject.Dto.Member;
 import com.MovieProject.Dto.Movie;
-import com.MovieProject.Service.MemberService;
 import com.MovieProject.Service.MovieService;
 
 /**
@@ -21,6 +19,8 @@ public class HomeController {
 	
 	@Autowired
 	private MovieService mvsvc;
+	
+	
 	
 	@RequestMapping(value="/ReservePage")
 	public ModelAndView ReservePage() {
@@ -34,9 +34,16 @@ public class HomeController {
 		mav.setViewName("/movie/ReservePage");
 		return mav;
 	}
+	@RequestMapping(value="/home")
+	public ModelAndView home() {
+		System.out.println("영화 크롤링");
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("home");
+		return mav;
+	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView home() {
+	public ModelAndView index() {
 		System.out.println("메인 페이지 이동요청");
 		ModelAndView mav = new ModelAndView();
 		//1. 영화 랭킹 목록 조회

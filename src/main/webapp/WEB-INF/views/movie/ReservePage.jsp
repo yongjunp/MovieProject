@@ -26,8 +26,14 @@
             	.selectList:hover{
             		background-color: darkgray;
             	}
-            	.seelctObj{
-            		background-color: darkgray;
+            	.selectObj{
+            		background-color: black !important;
+					color:white;
+					font-weight: bold;
+            	}
+            	.selectArea{
+            		height:400px;
+            		overflow:scroll;
             	}
             </style>
         </head>
@@ -38,7 +44,7 @@
             <header class="py-5 bg-light border-bottom mb-4">
                 <div class="container">
                     <div class="text-center my-5">
-                        <h1 class="fw-bolder">영화 예메 페이지</h1>
+                        <h1 class="fw-bolder">영화 예매 페이지</h1>
                         <p class="lead mb-0">영화, 극장, 날짜 선택 및 결제 페이지</p>
                     </div>
                 </div>
@@ -49,17 +55,13 @@
             <div class="row">
             	<div class="col-lg-3 col-md-6 p-2">
             		<div class="card mb-4">
-            			<div class="card-body p-2" id="movArea">
-            				<div class="selectList">영화1</div>
-            				<div class="selectList">영화2</div>
-            				<div class="selectList">영화3</div>
+            			<div class="card-body p-2 selectArea" id="movArea">
             			</div>
             		</div>
             	</div>
             	<div class="col-lg-3 col-md-6 p-2">
             		<div class="card mb-4">
-            			<div class="card-body p-2">
-            				<div class="selectList">극장1</div>
+            			<div class="card-body p-2 selectArea" id="thArea">
             			</div>
             		</div>
             	</div>
@@ -102,14 +104,101 @@
     		})
     		</script>
     		<script type="text/javascript">
-    			let movAreaEl = document.querySelectorAll('#movArea div.selectList');
-    			console.log(movAreaEl);
+    			$(document).ready(function (){
+					let mvList = getReserveMovieList();	
+					printMovieList(mvList);
+					let thList = getReserveTheaterList()
+					printTheaterList(thList);
+    			})
     			
-    			for(let movEl of movAreaEl){
-    				movEl.addEventListener('click', function(e){
-    				console.log(e.target.innerText);
-    				})
-    			}
+    		</script>
+    		<script type="text/javascript">
+    		//영화 예매 목록 가져오기
+			function getReserveMovieList(){
+    			let mvList = '';
+				$.ajax({
+					url:"getMvList",
+					type:"get",
+					dataType:"json",
+					async : false,
+					success:function(result){
+						mvList = result;
+					}
+				})
+				
+				return mvList;	
+			}
+			function getReserveMovieList(thinfo){
+    			let mvList = '';
+				$.ajax({
+					url:"getMvList",
+					type:"get",
+					dataType:"json",
+					async : false,
+					success:function(result){
+						mvList = result;
+					}
+				})
+				
+				return mvList;	
+			}
+    		//영화 출력 기능
+			function printMovieList(mvList){
+				let movAreaEl = document.querySelector("#movArea");
+				for(let mv of mvList){
+					let selectListEl = document.createElement("div");
+					selectListEl.setAttribute("class", "selectList");
+					selectListEl.addEventListener("click", function(e){
+						removeSelectStyle(movAreaEl);
+						
+						e.target.classList.add("selectObj");
+						
+						//1. 극장 목록 조회
+						
+						//2. 선택 정보 출력
+						
+					})
+					selectListEl.innerText=mv.mvtitle;
+
+					movAreaEl.appendChild(selectListEl);
+				}
+			}
+			//극장 예매 목록 가져오기
+			function getReserveTheaterList(){
+				let thList ="";
+				$.ajax({
+					url:"getThList",
+					type:"get",
+					dataType:"json",
+					async : false,
+					success:function(result){
+						thList = result;
+					}
+				})
+				return thList
+			}
+			//극장 출력 기능
+			function printTheaterList(thList){
+				let thAreaEl = document.querySelector("#thArea");
+				thAreaEl.innerHTML = "";
+				for(let th of thList){
+					let selectListEl = document.createElement("div");
+					selectListEl.setAttribute("class", "selectList");
+					selectListEl.addEventListener("click", function(e){
+						removeSelectStyle(thAreaEl);
+						e.target.classList.add("selectObj");
+					})
+					selectListEl.innerText=th.thname;
+
+					thAreaEl.appendChild(selectListEl);
+				}
+			}
+			//선택 목록 지우기
+			function removeSelectStyle(areaId){
+				for(let El of areaId.querySelectorAll(".selectObj")){
+					El.classList.remove("selectObj");	
+				}
+			}
     		</script>
         </body>
 

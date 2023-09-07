@@ -148,7 +148,7 @@
                                         <ul class="list-unstyled mb-0">
                                             <li><a href="#!">회원정보</a></li>
                                             <li><a href="/memberJoinForm">회원가입</a></li>
-                                            <li><a href="#!">Tutorials</a></li>
+                                            <li><a href="/home">영화 정보</a></li>
                                         </ul>
                                     </div>
                                 </div>

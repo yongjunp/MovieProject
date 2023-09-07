@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.MovieProject.Dto.Movie;
@@ -38,5 +39,22 @@ public class MovieController {
 		mav.addObject("mv", detail_mv);
 		mav.setViewName("movie/DetailMovie");
 		return mav;
+	}
+	
+
+	@RequestMapping(value="/getMvList")
+	public @ResponseBody String getMvList(String thname){
+		System.out.println("예매 가능 영화리스트");
+		System.out.println(thname);
+		String mvList = mvsvc.getMvList();
+		return mvList;
+	}
+	
+	@RequestMapping(value="/getThList")
+	public @ResponseBody String getThList(String mvcode){
+		System.out.println("예매 가능 영화리스트");
+		System.out.println("mvcode : "+mvcode);
+		String thList = mvsvc.getThList();
+		return thList;
 	}
 }
