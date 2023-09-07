@@ -105,16 +105,16 @@
     		</script>
     		<script type="text/javascript">
     			$(document).ready(function (){
-					let mvList = getReserveMovieList();	
+					let mvList = getReserveMovieList('1');	
 					printMovieList(mvList);
 					let thList = getReserveTheaterList('1');
-					console.log(thList);
 					printTheaterList(thList);
     			})
     			
     		</script>
     		<script type="text/javascript">
     		//영화 예매 목록 가져오기
+    		/*
 			function getReserveMovieList(){
     			let mvList = '';
 				$.ajax({
@@ -129,11 +129,13 @@
 				
 				return mvList;	
 			}
-			function getReserveMovieList(thinfo){
+    		*/
+			function getReserveMovieList(thcode){
     			let mvList = '';
 				$.ajax({
 					url:"getMvList",
 					type:"get",
+					data:{"thcode":thcode},
 					dataType:"json",
 					async : false,
 					success:function(result){
@@ -146,6 +148,7 @@
     		//영화 출력 기능
 			function printMovieList(mvList){
 				let movAreaEl = document.querySelector("#movArea");
+				movAreaEl.innerHTML = "";
 				for(let mv of mvList){
 					let selectListEl = document.createElement("div");
 					selectListEl.setAttribute("class", "selectList");
@@ -205,6 +208,8 @@
 					selectListEl.addEventListener("click", function(e){
 						removeSelectStyle(thAreaEl);
 						e.target.classList.add("selectObj");
+						printMovieList(getReserveMovieList(th.thcode));
+						console.log(getReserveMovieList(th.thcode));
 					})
 					selectListEl.innerText=th.thname;
 

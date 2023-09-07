@@ -22,7 +22,7 @@
 		FROM MOVIES 
 		WHERE MVCODE IN (SELECT MVCODE 
 						 FROM SCHEDULES
-		 				 WHERE SCDATE > SYSDATE
+		 				 WHERE SCDATE > SYSDATE <if test='thcode != "1"'>AND THCODE = #{thcode}</if>
 		 				 GROUP BY MVCODE)
 		ORDER BY MVOPEN DESC
 		

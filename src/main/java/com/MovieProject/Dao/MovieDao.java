@@ -13,7 +13,7 @@ public interface MovieDao {
 
 	Movie selectMovie(String mvcode);
 	
-	ArrayList<Movie> selectMovieList();
+	ArrayList<Movie> selectMovieList(String thname);
 
 	ArrayList<Theaters> selectTheaterList(@Param("mvcode")String mvcode);
 

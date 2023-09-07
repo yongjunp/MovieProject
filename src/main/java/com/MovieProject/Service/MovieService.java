@@ -40,10 +40,10 @@ public class MovieService {
 		return mvdao.selectMovie(mvcode);
 	}
 	
-	public ArrayList<Movie> getMovieList() {
+	public ArrayList<Movie> getMovieList(String thcode) {
 		System.out.println("getMovieList - 영화 전체목록 조회");
 		
-		ArrayList<Movie> movieList = mvdao.selectMovieList();
+		ArrayList<Movie> movieList = mvdao.selectMovieList(thcode);
 //		System.out.println("movieList : " + movieList);
 		for(Movie mv : movieList) {
 			String mvGrade = mv.getMvinfo().split(",")[0];
@@ -66,9 +66,9 @@ public class MovieService {
 		return movieList;
 	}
 
-	public String getMvList() {
+	public String getMvList(String thcode) {
 		System.out.println("service - getMvList() 호출");
-		ArrayList<Movie> mvList_array = getMovieList();
+		ArrayList<Movie> mvList_array = getMovieList(thcode);
 		return new Gson().toJson(mvList_array);
 	}
 

@@ -22,8 +22,8 @@ public class MovieController {
 	public ModelAndView movieList() {
 		System.out.println("movieList - 영화 목록페이지");
 		ModelAndView mav = new ModelAndView();
-		
-		ArrayList<Movie> movieList = mvsvc.getMovieList();
+		//mapper에서 thcode에 1값을 넣어주기위해서 "1"을 넣어줌
+		ArrayList<Movie> movieList = mvsvc.getMovieList("1");
 		System.out.println(movieList);
 		mav.addObject("mvList",movieList);
 		mav.setViewName("movie/MovieList");
@@ -44,17 +44,16 @@ public class MovieController {
 	
 
 	@RequestMapping(value="/getMvList")
-	public @ResponseBody String getMvList(String thname){
+	public @ResponseBody String getMvList(String thcode){
 		System.out.println("예매 가능 영화리스트");
-		System.out.println(thname);
-		String mvList = mvsvc.getMvList();
+		System.out.println(thcode);
+		String mvList = mvsvc.getMvList(thcode);
 		return mvList;
 	}
 	
 	@RequestMapping(value="/getThList")
 	public @ResponseBody String getThList( String mvcode){
 		System.out.println("예매 가능 영화리스트");
-		System.out.println("mvcode : "+mvcode);
 		String thList = mvsvc.getThList(mvcode);
 		return thList;
 	}
