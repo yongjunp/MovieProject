@@ -2,6 +2,8 @@ package com.MovieProject.Dao;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.MovieProject.Dto.Movie;
 import com.MovieProject.Dto.Theaters;
 
@@ -13,6 +15,6 @@ public interface MovieDao {
 	
 	ArrayList<Movie> selectMovieList();
 
-	ArrayList<Theaters> selectTheaterList();
+	ArrayList<Theaters> selectTheaterList(@Param("mvcode")String mvcode);
 
 }

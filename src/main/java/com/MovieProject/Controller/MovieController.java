@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -51,10 +52,10 @@ public class MovieController {
 	}
 	
 	@RequestMapping(value="/getThList")
-	public @ResponseBody String getThList(String mvcode){
+	public @ResponseBody String getThList( String mvcode){
 		System.out.println("예매 가능 영화리스트");
 		System.out.println("mvcode : "+mvcode);
-		String thList = mvsvc.getThList();
+		String thList = mvsvc.getThList(mvcode);
 		return thList;
 	}
 }

@@ -33,6 +33,7 @@
 		WHERE THCODE IN (SELECT THCODE 
 						 FROM SCHEDULES
 		 				 WHERE SCDATE > SYSDATE
+		 				 <if test='mvcode != "1"'>AND MVCODE = #{mvcode}</if>
 		 				 GROUP BY THCODE)
 	</select>
 </mapper>

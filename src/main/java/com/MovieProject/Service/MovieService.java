@@ -72,9 +72,9 @@ public class MovieService {
 		return new Gson().toJson(mvList_array);
 	}
 
-	public String getThList() {
+	public String getThList(String mvcode) {
 		System.out.println("service - getThList() 호출");
-		ArrayList<Theaters> thList = mvdao.selectTheaterList();
+		ArrayList<Theaters> thList = mvdao.selectTheaterList(mvcode);
 		return new Gson().toJson(thList);
 	}
 	

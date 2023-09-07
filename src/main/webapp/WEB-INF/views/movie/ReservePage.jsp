@@ -107,7 +107,8 @@
     			$(document).ready(function (){
 					let mvList = getReserveMovieList();	
 					printMovieList(mvList);
-					let thList = getReserveTheaterList()
+					let thList = getReserveTheaterList('1');
+					console.log(thList);
 					printTheaterList(thList);
     			})
     			
@@ -154,8 +155,8 @@
 						e.target.classList.add("selectObj");
 						
 						//1. 극장 목록 조회
-						
 						//2. 선택 정보 출력
+						printTheaterList(getReserveTheaterList(mv.mvcode));
 						
 					})
 					selectListEl.innerText=mv.mvtitle;
@@ -164,11 +165,28 @@
 				}
 			}
 			//극장 예매 목록 가져오기
+			/*
 			function getReserveTheaterList(){
 				let thList ="";
 				$.ajax({
 					url:"getThList",
 					type:"get",
+					dataType:"json",
+					async : false,
+					success:function(result){
+						thList = result;
+					}
+				})
+				return thList
+			}
+			*/
+			
+			function getReserveTheaterList(mvcode){
+				let thList ="";
+				$.ajax({
+					url:"getThList",
+					type:"get",
+					data:{"mvcode":mvcode},
 					dataType:"json",
 					async : false,
 					success:function(result){
