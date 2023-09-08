@@ -168,9 +168,11 @@
 				return mvList;	
 			}
     		//영화 출력 기능
+    		let reserve_mvcode = null; // 선택한 영화 코드를 저장할 변수
 			function printMovieList(mvList){
 				let movAreaEl = document.querySelector("#movArea");
 				movAreaEl.innerHTML = "";
+				
 				for(let mv of mvList){
 					let selectListEl = document.createElement("div");
 					selectListEl.setAttribute("class", "selectList");
@@ -180,9 +182,17 @@
 						selectMov = e.target.innerText;
 						//1. 극장 목록 조회
 						//2. 선택 정보 출력
+						if(reserve_mvcode != null){
+							reserve_thcode = null;
+						}
+						if(reserve_thcode == null){
 						printTheaterList(getReserveTheaterList(mv.mvcode));
+							
+						}
+						
 						document.querySelector("#selectMovPoster").setAttribute("src",mv.mvposter);
 						document.querySelector("#selectMovTitle").innerText = mv.mvtitle;
+						reserve_mvcode = '${mv.mvcode}';
 						
 					})
 					selectListEl.innerText=mv.mvtitle;
@@ -222,17 +232,26 @@
 				return thList
 			}
 			//극장 출력 기능
+			let reserve_thcode = null;
 			function printTheaterList(thList){
 				let thAreaEl = document.querySelector("#thArea");
 				thAreaEl.innerHTML = "";
+				
 				for(let th of thList){
 					let selectListEl = document.createElement("div");
 					selectListEl.setAttribute("class", "selectList");
 					selectListEl.addEventListener("click", function(e){
 						removeSelectStyle(thAreaEl);
 						e.target.classList.add("selectObj");
+						if(reserve_thcode != null){
+							reserve_mvcode = null;
+						}
+						if(reserve_mvcode == null){
 						printMovieList(getReserveMovieList(th.thcode));
+						}
+						
 						document.querySelector("#selectThname").innerText = th.thname;
+						reserve_thcode = "${th.thcode}";
 					})
 					selectListEl.innerText=th.thname;
 
