@@ -82,8 +82,30 @@
             	
             </div>
             <div class="row">
-            	선택정보 출력
-            </div>
+            	<div class="col-lg-3">
+            	<div class="card mb-4">
+            		<div class="card-body p-2" style="text-align:center;">
+            			<p class="card-text" id="selectMovTitle">영화 제목</p>
+            			<img id="selectMovPoster" style="max-width:200px; height: auto; border-radius:10px;">
+            		</div>
+            	</div>
+            	</div>
+            	<div class="col-lg-6">
+            	<div class="card mb-4">
+            		<div class="card-body p-2"id="selectThname">
+            			선택 극장 정보
+            		</div>
+            	</div>
+            	</div>
+            	<div class="col-lg-3">
+            	<div class="card mb-2">
+            		<div class="card-body p-2">
+            			<button class="btn btn-danger">예매하기</button>
+            		</div>
+            	</div>
+            	</div>
+            		
+            	</div>
           	<!-- 컨텐츠 종료 -->
             </div>
             <!-- Footer-->
@@ -154,12 +176,13 @@
 					selectListEl.setAttribute("class", "selectList");
 					selectListEl.addEventListener("click", function(e){
 						removeSelectStyle(movAreaEl);
-						
 						e.target.classList.add("selectObj");
-						
+						selectMov = e.target.innerText;
 						//1. 극장 목록 조회
 						//2. 선택 정보 출력
 						printTheaterList(getReserveTheaterList(mv.mvcode));
+						document.querySelector("#selectMovPoster").setAttribute("src",mv.mvposter);
+						document.querySelector("#selectMovTitle").innerText = mv.mvtitle;
 						
 					})
 					selectListEl.innerText=mv.mvtitle;
@@ -209,7 +232,7 @@
 						removeSelectStyle(thAreaEl);
 						e.target.classList.add("selectObj");
 						printMovieList(getReserveMovieList(th.thcode));
-						console.log(getReserveMovieList(th.thcode));
+						document.querySelector("#selectThname").innerText = th.thname;
 					})
 					selectListEl.innerText=th.thname;
 
