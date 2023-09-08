@@ -182,12 +182,8 @@
 						selectMov = e.target.innerText;
 						//1. 극장 목록 조회
 						//2. 선택 정보 출력
-						if(reserve_mvcode != null){
-							reserve_thcode = null;
-						}
 						if(reserve_thcode == null){
-						printTheaterList(getReserveTheaterList(mv.mvcode));
-							
+							printTheaterList(getReserveTheaterList(mv.mvcode));							
 						}
 						
 						document.querySelector("#selectMovPoster").setAttribute("src",mv.mvposter);
@@ -243,11 +239,8 @@
 					selectListEl.addEventListener("click", function(e){
 						removeSelectStyle(thAreaEl);
 						e.target.classList.add("selectObj");
-						if(reserve_thcode != null){
-							reserve_mvcode = null;
-						}
 						if(reserve_mvcode == null){
-						printMovieList(getReserveMovieList(th.thcode));
+							printMovieList(getReserveMovieList(th.thcode));
 						}
 						
 						document.querySelector("#selectThname").innerText = th.thname;
