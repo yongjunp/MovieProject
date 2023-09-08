@@ -168,6 +168,7 @@
 				return mvList;	
 			}
     		//영화 출력 기능
+    		let reserve_first = null;
     		let reserve_mvcode = null; // 선택한 영화 코드를 저장할 변수
 			function printMovieList(mvList){
 				let movAreaEl = document.querySelector("#movArea");
@@ -177,12 +178,16 @@
 					let selectListEl = document.createElement("div");
 					selectListEl.setAttribute("class", "selectList");
 					selectListEl.addEventListener("click", function(e){
+						if(reserve_first == null){
+							reserve_first = "mv";
+						}
 						removeSelectStyle(movAreaEl);
 						e.target.classList.add("selectObj");
 						selectMov = e.target.innerText;
 						//1. 극장 목록 조회
 						//2. 선택 정보 출력
-						if(reserve_thcode == null){
+						
+						if(reserve_first == "mv"){
 							printTheaterList(getReserveTheaterList(mv.mvcode));							
 						}
 						
@@ -237,9 +242,12 @@
 					let selectListEl = document.createElement("div");
 					selectListEl.setAttribute("class", "selectList");
 					selectListEl.addEventListener("click", function(e){
+						if(reserve_first == null){
+							reserve_first = "th";
+						}
 						removeSelectStyle(thAreaEl);
 						e.target.classList.add("selectObj");
-						if(reserve_mvcode == null){
+						if(reserve_first == "th"){
 							printMovieList(getReserveMovieList(th.thcode));
 						}
 						
