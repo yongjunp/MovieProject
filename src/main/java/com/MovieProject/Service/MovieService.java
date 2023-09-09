@@ -77,6 +77,12 @@ public class MovieService {
 		ArrayList<Theaters> thList = mvdao.selectTheaterList(mvcode);
 		return new Gson().toJson(thList);
 	}
+
+	public String getScList(String mvcode, String thcode) {
+		System.out.println("service - getScList()호출");
+		
+		return new Gson().toJson(mvdao.selectScList(mvcode, thcode));
+	}
 	
 
 }

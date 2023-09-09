@@ -57,4 +57,12 @@ public class MovieController {
 		String thList = mvsvc.getThList(mvcode);
 		return thList;
 	}
+	@RequestMapping(value="/getScList")
+	public @ResponseBody String getScList(String mvcode, String thcode) {
+		System.out.println("스케쥴 목록 요청");
+		System.out.println("mvcode : "+ mvcode);
+		System.out.println("thcode : "+ thcode);
+		String scList = mvsvc.getScList(mvcode, thcode);
+		return scList;
+	}
 }

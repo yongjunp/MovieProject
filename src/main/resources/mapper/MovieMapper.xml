@@ -27,7 +27,7 @@
 		ORDER BY MVOPEN DESC
 		
 	</select>
-	<select id="selectTheaterList" resultType="com.MovieProject.Dto.Theaters">
+	<select id="selectTheaterList" resultType="th">
 	SELECT *
 		FROM THEATERS 
 		WHERE THCODE IN (SELECT THCODE 
@@ -35,5 +35,10 @@
 		 				 WHERE SCDATE > SYSDATE
 		 				 <if test='mvcode != "1"'>AND MVCODE = #{mvcode}</if>
 		 				 GROUP BY THCODE)
+	</select>
+	<select id="selectScList" resultType="sc">
+	SELECT *
+	FROM SCHEDULES
+	WHERE THCODE = #{thcode} AND MVCODE = #{mvcode}
 	</select>
 </mapper>

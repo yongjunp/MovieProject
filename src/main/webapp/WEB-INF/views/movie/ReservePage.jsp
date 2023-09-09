@@ -90,10 +90,16 @@
             		</div>
             	</div>
             	</div>
-            	<div class="col-lg-6">
+            	<div class="col-lg-3">
             	<div class="card mb-4">
             		<div class="card-body p-2"id="selectThname">
             			선택 극장 정보
+            		</div>
+            	</div>
+            	<div class="col-lg-3">
+            	<div class="card mb-4">
+            		<div class="card-body p-2"id="selectThname">
+            			시간및 날짜
             		</div>
             	</div>
             	</div>
@@ -155,7 +161,7 @@
 			function getReserveMovieList(thcode){
     			let mvList = '';
 				$.ajax({
-					url:"getMvList",
+					url:"/getMvList",
 					type:"get",
 					data:{"thcode":thcode},
 					dataType:"json",
@@ -187,14 +193,17 @@
 						//1. 극장 목록 조회
 						//2. 선택 정보 출력
 						
+						
+						document.querySelector("#selectMovPoster").setAttribute("src",mv.mvposter);
+						document.querySelector("#selectMovTitle").innerText = mv.mvtitle;
 						if(reserve_first == "mv"){
 							printTheaterList(getReserveTheaterList(mv.mvcode));							
 						}
 						
-						document.querySelector("#selectMovPoster").setAttribute("src",mv.mvposter);
-						document.querySelector("#selectMovTitle").innerText = mv.mvtitle;
-						reserve_mvcode = '${mv.mvcode}';
-						
+						reserve_mvcode = mv.mvcode;
+						if(reserve_first == "th"){
+							getSchedulesList(reserve_mvcode, reserve_thcode);
+						}
 					})
 					selectListEl.innerText=mv.mvtitle;
 
@@ -252,7 +261,10 @@
 						}
 						
 						document.querySelector("#selectThname").innerText = th.thname;
-						reserve_thcode = "${th.thcode}";
+						reserve_thcode = th.thcode;
+						if(reserve_first == "mv"){
+							printSchedulesList(getSchedulesList(reserve_mvcode, reserve_thcode));
+						}
 					})
 					selectListEl.innerText=th.thname;
 
@@ -264,6 +276,25 @@
 				for(let El of areaId.querySelectorAll(".selectObj")){
 					El.classList.remove("selectObj");	
 				}
+			}
+			//스케쥴 목록 가져오기
+			function getSchedulesList(mvcode, thcode){
+				let scList = null;
+				$.ajax({
+					url:"/getScList",
+					type:"get",
+					data:{"mvcode":mvcode, "thcode":thcode},
+					dataType:"json",
+					async:false,
+					success:function(rs){
+						scList = rs;
+					}
+				})
+				return scList;
+			}
+			//스케쥴 날짜 출력하기
+			function printSchedulesList(scList){
+				console.log(scList);
 			}
     		</script>
         </body>

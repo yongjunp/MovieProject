@@ -5,6 +5,8 @@
 	<typeAliases>
 		<typeAlias type="com.MovieProject.Dto.Movie" alias="mov"/>
 		<typeAlias type="com.MovieProject.Dto.Member" alias="mem"/>
+		<typeAlias type="com.MovieProject.Dto.Schedule" alias="sc"/>
+		<typeAlias type="com.MovieProject.Dto.Theaters" alias="th"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mapper/AdminMapper.xml"/>
