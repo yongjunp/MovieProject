@@ -37,8 +37,20 @@
 		 				 GROUP BY THCODE)
 	</select>
 	<select id="selectScList" resultType="sc">
-	SELECT *
+	SELECT 
+	<if test='scdate == "1"'>DISTINCT SUBSTR(scdate, 1,10) as SCDATE</if>
+	<if test='scdate != "1"'>*</if>
 	FROM SCHEDULES
-	WHERE THCODE = #{thcode} AND MVCODE = #{mvcode}
+	WHERE THCODE = #{thcode} AND MVCODE = #{mvcode} 
+	<if test='scdate == "1"'>AND SCDATE > SYSDATE</if>
+	<if test='scdate != "1"'> AND TO_CHAR(SCDATE, 'YYYY/MM/DD') = #{scdate}</if>
+	ORDER BY SCDATE
 	</select>
+	
+	<select id="selectMaxRecode" resultType="string">
+	SELECT NVL(MAX(RECODE),'RE00000') FROM RESERVES
+	</select>
+	<insert id="insertReserve">
+	insert into reserves values(#{recode},#{mid},#{mvcode},#{thcode},#{schall},TO_DATE(#{scdate}, 'YYYY/MM/DD HH24:MI:SS'), sysdate)
+	</insert>
 </mapper>

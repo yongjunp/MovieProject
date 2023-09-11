@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.MovieProject.Dao.MovieDao;
 import com.MovieProject.Dto.Movie;
+import com.MovieProject.Dto.Reserve;
 import com.MovieProject.Dto.Theaters;
 import com.google.gson.Gson;
 
@@ -78,10 +79,35 @@ public class MovieService {
 		return new Gson().toJson(thList);
 	}
 
-	public String getScList(String mvcode, String thcode) {
+	public String getScList(String mvcode, String thcode, String scdate) {
 		System.out.println("service - getScList()호출");
 		
-		return new Gson().toJson(mvdao.selectScList(mvcode, thcode));
+		return new Gson().toJson(mvdao.selectScList(mvcode, thcode, scdate));
+	}
+
+	public boolean insertReserve(Reserve rs) {
+		System.out.println("servece - inserteReserve()호출");
+		String maxRecode = mvdao.selectMaxRecode();
+		String recode = "";
+		if(maxRecode.equals("RE00000")) {
+			recode = "RE00001";
+			System.out.println("maxRecode");
+		}else {
+			String strCode = maxRecode.substring(0, 2);
+			int numCode = Integer.parseInt(maxRecode.substring(2));
+			recode = strCode + String.format("%05d", numCode + 1); // 5자리 문자로 만들고 비어있는 자리는 0으로 채움.
+		}
+		rs.setRecode(recode);
+		rs.setScdate("20"+rs.getScdate());
+		System.out.println(rs);
+		int result = mvdao.insertReserve(rs);
+		boolean resultMsg = false;
+		if(result > 0) {
+			resultMsg = true;
+		}else {
+			resultMsg = false;
+		}
+		return resultMsg;
 	}
 	
 

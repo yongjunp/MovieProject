@@ -67,14 +67,14 @@
             	</div>
             	<div class="col-lg-3 col-md-6 p-2">
             		<div class="card mb-4">
-            			<div class="card-body p-2">
+            			<div class="card-body p-2" id="scDateArea">
             				<div class="selectList">날짜1</div>
             			</div>
             		</div>
             	</div>
             	<div class="col-lg-3 col-md-6 p-2">
             		<div class="card mb-4">
-            			<div class="card-body p-2">
+            			<div class="card-body p-2" id="scTimeArea">
             				<div class="selectList">상영관 및 시간1</div>
             			</div>
             		</div>
@@ -83,35 +83,33 @@
             </div>
             <div class="row">
             	<div class="col-lg-3">
-            	<div class="card mb-4">
-            		<div class="card-body p-2" style="text-align:center;">
-            			<p class="card-text" id="selectMovTitle">영화 제목</p>
-            			<img id="selectMovPoster" style="max-width:200px; height: auto; border-radius:10px;">
-            		</div>
-            	</div>
-            	</div>
-            	<div class="col-lg-3">
-            	<div class="card mb-4">
-            		<div class="card-body p-2"id="selectThname">
-            			선택 극장 정보
-            		</div>
+            		<div class="card mb-4">
+            			<div class="card-body p-2" style="text-align:center;">
+            				<p class="card-text" id="selectMovTitle">영화 제목</p>
+            				<img id="selectMovPoster" style="max-width:200px; height: auto; border-radius:10px;">
+          	  			</div>
+          		  	</div>
             	</div>
             	<div class="col-lg-3">
-            	<div class="card mb-4">
-            		<div class="card-body p-2"id="selectThname">
-            			시간및 날짜
+            		<div class="card mb-4">
+            			<div class="card-body p-2"id="selectThname">
+            				선택 극장 정보
+            			</div>
             		</div>
-            	</div>
             	</div>
             	<div class="col-lg-3">
-            	<div class="card mb-2">
-            		<div class="card-body p-2">
-            			<button class="btn btn-danger">예매하기</button>
+            		<div class="card mb-4">
+            			<div class="card-body p-2"id="selectDate">
+            				<p id="scDate"></p>
+            			</div>
             		</div>
             	</div>
+            	<div class="col-lg-3">
+            		<div class="card mb-2">
+            				<button class="btn btn-danger" onclick="reserve()">예매하기</button>
+            		</div>
             	</div>
-            		
-            	</div>
+            </div>
           	<!-- 컨텐츠 종료 -->
             </div>
             <!-- Footer-->
@@ -124,6 +122,10 @@
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
             <!-- Core theme JS-->
             <script src="/resources/js/scripts.js"></script>
+            <%--
+            	c태그로 목록을 모두 출력해둔 상태에서 처음에 받아온 오브젝트와 영화나 극장 선택후 가져오는 오브젝트와
+            	비교해서 다른 오브젝트는 클릭할 수 없는 상태의 스타일 입히기(숙제)
+             --%>
             <script type="text/javascript">
             $(document).ready(function (){
     			if('${msg}'!=''){
@@ -142,22 +144,6 @@
     		</script>
     		<script type="text/javascript">
     		//영화 예매 목록 가져오기
-    		/*
-			function getReserveMovieList(){
-    			let mvList = '';
-				$.ajax({
-					url:"getMvList",
-					type:"get",
-					dataType:"json",
-					async : false,
-					success:function(result){
-						mvList = result;
-					}
-				})
-				
-				return mvList;	
-			}
-    		*/
 			function getReserveMovieList(thcode){
     			let mvList = '';
 				$.ajax({
@@ -190,19 +176,23 @@
 						removeSelectStyle(movAreaEl);
 						e.target.classList.add("selectObj");
 						selectMov = e.target.innerText;
-						//1. 극장 목록 조회
-						//2. 선택 정보 출력
-						
 						
 						document.querySelector("#selectMovPoster").setAttribute("src",mv.mvposter);
 						document.querySelector("#selectMovTitle").innerText = mv.mvtitle;
 						if(reserve_first == "mv"){
-							printTheaterList(getReserveTheaterList(mv.mvcode));							
+							removeMvTh(reserve_first);
+							printTheaterList(getReserveTheaterList(mv.mvcode));
+							reserve_thcode = null;
+							reserve_scdate = null;
+							reserve_schall = null;						
 						}
 						
 						reserve_mvcode = mv.mvcode;
+						removeSchedule();
 						if(reserve_first == "th"){
-							getSchedulesList(reserve_mvcode, reserve_thcode);
+							reserve_scdate = null;
+							reserve_schall = null;
+							printScDateList( getScDateList(reserve_mvcode, reserve_thcode) )
 						}
 					})
 					selectListEl.innerText=mv.mvtitle;
@@ -211,22 +201,6 @@
 				}
 			}
 			//극장 예매 목록 가져오기
-			/*
-			function getReserveTheaterList(){
-				let thList ="";
-				$.ajax({
-					url:"getThList",
-					type:"get",
-					dataType:"json",
-					async : false,
-					success:function(result){
-						thList = result;
-					}
-				})
-				return thList
-			}
-			*/
-			
 			function getReserveTheaterList(mvcode){
 				let thList ="";
 				$.ajax({
@@ -257,13 +231,20 @@
 						removeSelectStyle(thAreaEl);
 						e.target.classList.add("selectObj");
 						if(reserve_first == "th"){
+							removeMvTh(reserve_first);
 							printMovieList(getReserveMovieList(th.thcode));
+							reserve_mvcode = null;
+							reserve_scdate = null;
+							reserve_schall = null;
 						}
 						
 						document.querySelector("#selectThname").innerText = th.thname;
 						reserve_thcode = th.thcode;
+						removeSchedule();
 						if(reserve_first == "mv"){
-							printSchedulesList(getSchedulesList(reserve_mvcode, reserve_thcode));
+							reserve_scdate = null;
+							reserve_schall = null;
+							printScDateList( getScDateList(reserve_mvcode, reserve_thcode) );
 						}
 					})
 					selectListEl.innerText=th.thname;
@@ -277,13 +258,13 @@
 					El.classList.remove("selectObj");	
 				}
 			}
-			//스케쥴 목록 가져오기
-			function getSchedulesList(mvcode, thcode){
+			//스케쥴 날짜 가져오기
+			function getScDateList(mvcode, thcode){
 				let scList = null;
 				$.ajax({
 					url:"/getScList",
 					type:"get",
-					data:{"mvcode":mvcode, "thcode":thcode},
+					data:{"mvcode":mvcode, "thcode":thcode, "scdate":"1"},
 					dataType:"json",
 					async:false,
 					success:function(rs){
@@ -293,10 +274,102 @@
 				return scList;
 			}
 			//스케쥴 날짜 출력하기
-			function printSchedulesList(scList){
-				console.log(scList);
+			let reserve_scdate = null;
+			function printScDateList(scList){
+				console.log("날짜 생성 기능")
+				let dateArea = document.querySelector("#scDateArea");
+				dateArea.innerHTML = '';
+				for(let sc of scList){
+					let selectListEl = document.createElement('div');
+					selectListEl.setAttribute("class","selectList")
+					selectListEl.innerText = sc.scdate;
+					selectListEl.addEventListener("click", function(e){
+						removeSelectStyle(dateArea);
+						e.target.classList.add("selectObj");
+						reserve_scdate = e.target.innerText;
+						document.querySelector("#scDate").innerText = reserve_scdate;
+						getSchedulesList(reserve_mvcode, reserve_thcode, reserve_scdate);
+					})
+					dateArea.appendChild(selectListEl);
+				}
+			}
+
+			
+			//스케쥴 목록 가져오기
+			function getSchedulesList(mvcode, thcode, scdate){
+				$.ajax({
+					type:"get",
+					url:"/getScList",
+					data:{"mvcode":mvcode, "thcode":thcode, "scdate":scdate},
+					dataType:"json",
+					async:false,
+					success:function(rs){
+						printSchedulesList(rs);
+					}
+				})
+			}
+			//스케쥴 시간 홀 출력하기
+			let reserve_schall = null;
+				function printSchedulesList(scList){
+					let timeArea = document.querySelector("#scTimeArea");
+					timeArea.innerHTML ="";
+						for(let sc of scList){
+							let selectEl = document.createElement("div");
+							selectEl.setAttribute("class","selectList");
+							selectEl.innerText = sc.scdate.split(" ")[1] + "\n" + sc.schall;
+							selectEl.addEventListener("click", function(e){
+								reserve_scdate = reserve_scdate + " " + sc.scdate.split(" ")[1];
+								reserve_schall = sc.schall;
+								removeSelectStyle(timeArea);
+								e.target.classList.add("selectObj");
+
+								let scDateEl = document.querySelector("#scDate");
+								scDateEl.innerText = scDateEl.innerText + "\n" + e.target.innerText;
+							})
+							timeArea.appendChild(selectEl);
+						}
+				}
+			//스케쥴 목록 삭제
+    		function removeSchedule(){
+    			let dateArea = document.querySelector("#scDateArea");
+    			let hallArea = document.querySelector("#scTimeArea");
+    			let scDateEl = document.querySelector("#scDate");
+				scDateEl.innerText = "";
+    			dateArea.innerHTML = '';
+    			hallArea.innerHTML = '';
+    		}
+			//선택된 영화나 극장 삭제 기능
+			function removeMvTh(reserve_first){
+				if(reserve_first == "mv"){
+					document.querySelector("#selectThname").innerText = '';
+				}else{
+					document.querySelector("#selectMovPoster").removeAttribute("src");
+					document.querySelector("#selectMovTitle").innerText = '';
+				}
+				
+			}
+			// 선택된 영화나 극장 스케쥴 확인 기능
+			function reserve(){
+				console.log("loginId : ${sessionScope.loginId}");
+				console.log("reserve_mvcode : "+ reserve_mvcode);
+				console.log("reserve_thcode : "+ reserve_thcode);
+				console.log("reserve_scdate : "+ reserve_scdate);
+				console.log("reserve_schall : "+ reserve_schall);
+				$.ajax({
+					type:"get",
+					url:"/reserve",
+					data:{"mid":${sessionScope.loginId},"mvcode":reserve_mvcode, "thcode":reserve_thcode, "scdate":reserve_scdate,"schall":reserve_schall},
+					success:function(){
+						console.log("성공");
+					}
+				})
 			}
     		</script>
+    		<!-- 
+    		<div class="card-body p-2" id="scDateArea">
+            	<div class="selectList">날짜1</div>
+            </div>
+    		 -->
         </body>
 
         </html>

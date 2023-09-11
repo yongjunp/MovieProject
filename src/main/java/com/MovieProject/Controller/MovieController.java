@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.MovieProject.Dto.Movie;
+import com.MovieProject.Dto.Reserve;
 import com.MovieProject.Service.MovieService;
 
 @Controller
@@ -58,11 +58,22 @@ public class MovieController {
 		return thList;
 	}
 	@RequestMapping(value="/getScList")
-	public @ResponseBody String getScList(String mvcode, String thcode) {
-		System.out.println("스케쥴 목록 요청");
+	public @ResponseBody String getScList(String mvcode, String thcode, String scdate) {
+		System.out.println("스케쥴 날짜 목록 요청");
 		System.out.println("mvcode : "+ mvcode);
 		System.out.println("thcode : "+ thcode);
-		String scList = mvsvc.getScList(mvcode, thcode);
+		if(!scdate.equals("1")) {
+			scdate = "20" + scdate;			
+		}
+		System.out.println("scdate : "+scdate);
+		String scList = mvsvc.getScList(mvcode, thcode, scdate);
+		System.out.println(scList);
 		return scList;
+	}
+	@RequestMapping(value = "/reserve")
+	public @ResponseBody boolean reserve(Reserve rs) {
+		System.out.println("예매하기");
+		boolean result = mvsvc.insertReserve(rs);
+		return result;
 	}
 }
