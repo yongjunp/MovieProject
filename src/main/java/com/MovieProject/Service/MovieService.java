@@ -98,7 +98,6 @@ public class MovieService {
 			recode = strCode + String.format("%05d", numCode + 1); // 5자리 문자로 만들고 비어있는 자리는 0으로 채움.
 		}
 		rs.setRecode(recode);
-		rs.setScdate("20"+rs.getScdate());
 		System.out.println(rs);
 		int result = mvdao.insertReserve(rs);
 		boolean resultMsg = false;
@@ -109,6 +108,4 @@ public class MovieService {
 		}
 		return resultMsg;
 	}
-	
-
 }

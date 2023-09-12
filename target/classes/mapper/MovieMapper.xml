@@ -38,12 +38,13 @@
 	</select>
 	<select id="selectScList" resultType="sc">
 	SELECT 
-	<if test='scdate == "1"'>DISTINCT SUBSTR(scdate, 1,10) as SCDATE</if>
+	<if test='scdate == "1"'>to_char(scdate, 'YYYY/MM/DD') as SCDATE</if>
 	<if test='scdate != "1"'>*</if>
 	FROM SCHEDULES
 	WHERE THCODE = #{thcode} AND MVCODE = #{mvcode} 
-	<if test='scdate == "1"'>AND SCDATE > SYSDATE</if>
+	<if test='scdate == "1"'>AND SCDATE > SYSDATE group by to_char(scdate, 'YYYY/MM/DD')</if>
 	<if test='scdate != "1"'> AND TO_CHAR(SCDATE, 'YYYY/MM/DD') = #{scdate}</if>
+	
 	ORDER BY SCDATE
 	</select>
 	

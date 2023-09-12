@@ -135,6 +135,9 @@
     		</script>
     		<script type="text/javascript">
     			$(document).ready(function (){
+    				if("${sessionScope.loginId}" == ""){
+    					location.href="/?msg=로그아웃되었습니다.";
+    				}
 					let mvList = getReserveMovieList('1');	
 					printMovieList(mvList);
 					let thList = getReserveTheaterList('1');
@@ -318,13 +321,14 @@
 							selectEl.setAttribute("class","selectList");
 							selectEl.innerText = sc.scdate.split(" ")[1] + "\n" + sc.schall;
 							selectEl.addEventListener("click", function(e){
-								reserve_scdate = reserve_scdate + " " + sc.scdate.split(" ")[1];
+								reserve_scdate = reserve_scdate.split(" ")[0] + " " + sc.scdate.split(" ")[1];
 								reserve_schall = sc.schall;
 								removeSelectStyle(timeArea);
 								e.target.classList.add("selectObj");
 
 								let scDateEl = document.querySelector("#scDate");
-								scDateEl.innerText = scDateEl.innerText + "\n" + e.target.innerText;
+								scDateEl.innerText = "";
+								scDateEl.innerText = reserve_scdate+"\n" + reserve_schall;
 							})
 							timeArea.appendChild(selectEl);
 						}
@@ -348,7 +352,7 @@
 				}
 				
 			}
-			// 선택된 영화나 극장 스케쥴 확인 기능
+			// 예매 기능
 			function reserve(){
 				console.log("loginId : ${sessionScope.loginId}");
 				console.log("reserve_mvcode : "+ reserve_mvcode);
@@ -365,11 +369,8 @@
 				})
 			}
     		</script>
-    		<!-- 
-    		<div class="card-body p-2" id="scDateArea">
-            	<div class="selectList">날짜1</div>
-            </div>
-    		 -->
+    		<script type="text/javascript">
+    		</script>
         </body>
 
         </html>

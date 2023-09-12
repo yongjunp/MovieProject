@@ -62,9 +62,6 @@ public class MovieController {
 		System.out.println("스케쥴 날짜 목록 요청");
 		System.out.println("mvcode : "+ mvcode);
 		System.out.println("thcode : "+ thcode);
-		if(!scdate.equals("1")) {
-			scdate = "20" + scdate;			
-		}
 		System.out.println("scdate : "+scdate);
 		String scList = mvsvc.getScList(mvcode, thcode, scdate);
 		System.out.println(scList);
