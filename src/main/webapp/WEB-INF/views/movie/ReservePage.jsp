@@ -17,6 +17,14 @@
             	.min_hei{
             		min-height: 397px;
             	}
+            	.unselectList{
+            		cursor: pointer;
+            		border-radius:5px;
+            		margin-bottom:3px;
+            		margin-top:3px;
+            		border:1px solid gray;
+            		color:gray;
+            	}
             	.selectList{
             		cursor: pointer;
             		border-radius: 5px;
@@ -24,7 +32,7 @@
             		margin-top:3px;
             		padding: 3px;
             		
-            		border: 1px solid black;
+            		border: 3px solid black;
             	}
             	.selectList:hover{
             		background-color: darkgray;
@@ -183,9 +191,10 @@
 			function printMovieList(mvList){
 				let movAreaEl = document.querySelector("#movArea");
 				movAreaEl.innerHTML = "";
-				
+				console.log(mvList);
 				for(let mv of mvList){
 					let selectListEl = document.createElement("div");
+					selectListEl.setAttribute("class", "selectList");
 					selectListEl.setAttribute("class", "selectList");
 					selectListEl.addEventListener("click", function(e){
 						if(reserve_first == null){
