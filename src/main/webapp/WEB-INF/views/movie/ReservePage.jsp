@@ -14,6 +14,9 @@
             <!-- Core theme CSS (includes Bootstrap)-->
             <link href="/resources/css/styles.css" rel="stylesheet" />
             <style type="text/css">
+            	.min_hei{
+            		min-height: 397px;
+            	}
             	.selectList{
             		cursor: pointer;
             		border-radius: 5px;
@@ -67,14 +70,14 @@
             	</div>
             	<div class="col-lg-3 col-md-6 p-2">
             		<div class="card mb-4">
-            			<div class="card-body p-2" id="scDateArea">
+            			<div class="card-body p-2 selectArea" id="scDateArea">
             				<div class="selectList">날짜1</div>
             			</div>
             		</div>
             	</div>
             	<div class="col-lg-3 col-md-6 p-2">
             		<div class="card mb-4">
-            			<div class="card-body p-2" id="scTimeArea">
+            			<div class="card-body p-2 selectArea" id="scTimeArea">
             				<div class="selectList">상영관 및 시간1</div>
             			</div>
             		</div>
@@ -83,24 +86,36 @@
             </div>
             <div class="row">
             	<div class="col-lg-3">
-            		<div class="card mb-4">
+            		<div class="card mb-4 min_hei">
             			<div class="card-body p-2" style="text-align:center;">
+            				<h5>선택한 영화</h5>
             				<p class="card-text" id="selectMovTitle">영화 제목</p>
             				<img id="selectMovPoster" style="max-width:200px; height: auto; border-radius:10px;">
           	  			</div>
           		  	</div>
             	</div>
             	<div class="col-lg-3">
-            		<div class="card mb-4">
-            			<div class="card-body p-2"id="selectThname">
-            				선택 극장 정보
+            		<div class="card mb-4 min_hei">
+            			<div class="card-body p-2" style="text-align:center;">
+            			<h5>
+            				선택 극장
+            			</h5>
+            				<p id="selectThname"></p>
             			</div>
             		</div>
             	</div>
             	<div class="col-lg-3">
-            		<div class="card mb-4">
+            		<div class="card mb-4 min_hei" style="text-align:center;">
             			<div class="card-body p-2"id="selectDate">
+            			<h5>
+            				선택한 날짜 및 시간
+            			</h5>
             				<p id="scDate"></p>
+            			<h5>
+            				선택한 극장
+            			</h5>
+            				<p id="schall"></p>
+            				
             			</div>
             		</div>
             	</div>
@@ -282,15 +297,27 @@
 				console.log("날짜 생성 기능")
 				let dateArea = document.querySelector("#scDateArea");
 				dateArea.innerHTML = '';
+				let nowMM = null;
 				for(let sc of scList){
 					let selectListEl = document.createElement('div');
 					selectListEl.setAttribute("class","selectList")
-					selectListEl.innerText = sc.scdate;
+					let dateArr = sc.scdate.split("/");
+					if(nowMM!=dateArr[1]){
+						nowMM = dateArr[1];
+						let mmDiv = document.createElement("div");
+						mmDiv.innerText = dateArr[1]+"월";
+						dateArea.appendChild(mmDiv);
+					}
+					selectListEl.innerText = dateArr[2]+"일";
+					
+					
+					
 					selectListEl.addEventListener("click", function(e){
 						removeSelectStyle(dateArea);
 						e.target.classList.add("selectObj");
-						reserve_scdate = e.target.innerText;
+						reserve_scdate = sc.scdate;
 						document.querySelector("#scDate").innerText = reserve_scdate;
+						document.querySelector("#schall").innerText = "";
 						getSchedulesList(reserve_mvcode, reserve_thcode, reserve_scdate);
 					})
 					dateArea.appendChild(selectListEl);
@@ -316,10 +343,18 @@
 				function printSchedulesList(scList){
 					let timeArea = document.querySelector("#scTimeArea");
 					timeArea.innerHTML ="";
+					let nowHall = null;
 						for(let sc of scList){
+							if(nowHall != sc.schall){
+								nowHall = sc.schall;
+								let divEl = document.createElement("div");
+								divEl.innerText = sc.schall;
+								timeArea.appendChild(divEl);
+							}
+							
 							let selectEl = document.createElement("div");
 							selectEl.setAttribute("class","selectList");
-							selectEl.innerText = sc.scdate.split(" ")[1] + "\n" + sc.schall;
+							selectEl.innerText = sc.scdate.split(" ")[1];
 							selectEl.addEventListener("click", function(e){
 								reserve_scdate = reserve_scdate.split(" ")[0] + " " + sc.scdate.split(" ")[1];
 								reserve_schall = sc.schall;
@@ -328,7 +363,10 @@
 
 								let scDateEl = document.querySelector("#scDate");
 								scDateEl.innerText = "";
-								scDateEl.innerText = reserve_scdate+"\n" + reserve_schall;
+								let scHallEl = document.querySelector("#schall");
+								scHallEl.innerText = "";
+								scDateEl.innerText = reserve_scdate;
+								scHallEl.innerText = reserve_schall;
 							})
 							timeArea.appendChild(selectEl);
 						}
@@ -338,6 +376,8 @@
     			let dateArea = document.querySelector("#scDateArea");
     			let hallArea = document.querySelector("#scTimeArea");
     			let scDateEl = document.querySelector("#scDate");
+    			let scHallEl = document.querySelector("#schall");
+    			scHallEl.innerText = "";
 				scDateEl.innerText = "";
     			dateArea.innerHTML = '';
     			hallArea.innerHTML = '';

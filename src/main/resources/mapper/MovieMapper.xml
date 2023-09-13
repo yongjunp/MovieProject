@@ -42,10 +42,9 @@
 	<if test='scdate != "1"'>*</if>
 	FROM SCHEDULES
 	WHERE THCODE = #{thcode} AND MVCODE = #{mvcode} 
-	<if test='scdate == "1"'>AND SCDATE > SYSDATE group by to_char(scdate, 'YYYY/MM/DD')</if>
-	<if test='scdate != "1"'> AND TO_CHAR(SCDATE, 'YYYY/MM/DD') = #{scdate}</if>
+	<if test='scdate == "1"'>AND SCDATE > SYSDATE group by to_char(scdate, 'YYYY/MM/DD') ORDER BY SCDATE</if>
+	<if test='scdate != "1"'> AND TO_CHAR(SCDATE, 'YYYY/MM/DD') = #{scdate} ORDER BY SCHALL</if>
 	
-	ORDER BY SCDATE
 	</select>
 	
 	<select id="selectMaxRecode" resultType="string">
