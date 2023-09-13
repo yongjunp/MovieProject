@@ -195,7 +195,6 @@
 				for(let mv of mvList){
 					let selectListEl = document.createElement("div");
 					selectListEl.setAttribute("class", "selectList");
-					selectListEl.setAttribute("class", "selectList");
 					selectListEl.addEventListener("click", function(e){
 						if(reserve_first == null){
 							reserve_first = "mv";
