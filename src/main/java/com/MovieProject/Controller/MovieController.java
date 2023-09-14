@@ -67,8 +67,8 @@ public class MovieController {
 		System.out.println(scList);
 		return scList;
 	}
-	@RequestMapping(value = "/reserve")
-	public @ResponseBody boolean reserve(Reserve rs) {
+	@RequestMapping(value = "/registReserveInfo")
+	public @ResponseBody boolean registReserveInfo(Reserve rs) {
 		System.out.println("예매하기");
 		boolean result = mvsvc.insertReserve(rs);
 		return result;

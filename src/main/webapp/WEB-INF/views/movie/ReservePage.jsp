@@ -14,6 +14,9 @@
             <!-- Core theme CSS (includes Bootstrap)-->
             <link href="/resources/css/styles.css" rel="stylesheet" />
             <style type="text/css">
+            	.displayinline{
+            		display: inline-block;
+            	}
             	.min_hei{
             		min-height: 397px;
             	}
@@ -79,14 +82,12 @@
             	<div class="col-lg-3 col-md-6 p-2">
             		<div class="card mb-4">
             			<div class="card-body p-2 selectArea" id="scDateArea">
-            				<div class="selectList">날짜1</div>
             			</div>
             		</div>
             	</div>
             	<div class="col-lg-3 col-md-6 p-2">
             		<div class="card mb-4">
             			<div class="card-body p-2 selectArea" id="scTimeArea">
-            				<div class="selectList">상영관 및 시간1</div>
             			</div>
             		</div>
             	</div>
@@ -129,7 +130,7 @@
             	</div>
             	<div class="col-lg-3">
             		<div class="card mb-2">
-            				<button class="btn btn-danger" onclick="reserve()">예매하기</button>
+            				<button class="btn btn-danger" onclick="movieReserve()">예매하기</button>
             		</div>
             	</div>
             </div>
@@ -149,13 +150,7 @@
             	c태그로 목록을 모두 출력해둔 상태에서 처음에 받아온 오브젝트와 영화나 극장 선택후 가져오는 오브젝트와
             	비교해서 다른 오브젝트는 클릭할 수 없는 상태의 스타일 입히기(숙제)
              --%>
-            <script type="text/javascript">
-            $(document).ready(function (){
-    			if('${msg}'!=''){
-    				alert('${msg}');
-    			}
-    		})
-    		</script>
+            
     		<script type="text/javascript">
     			$(document).ready(function (){
     				if("${sessionScope.loginId}" == ""){
@@ -187,7 +182,10 @@
 			}
     		//영화 출력 기능
     		let reserve_first = null;
-    		let reserve_mvcode = null; // 선택한 영화 코드를 저장할 변수
+    		let reserve_mvcode = null;
+    		let reserve_thcode = null;
+			let reserve_scdate = null;
+			let reserve_schall = null;
 			function printMovieList(mvList){
 				let movAreaEl = document.querySelector("#movArea");
 				movAreaEl.innerHTML = "";
@@ -242,7 +240,7 @@
 				return thList
 			}
 			//극장 출력 기능
-			let reserve_thcode = null;
+			
 			function printTheaterList(thList){
 				let thAreaEl = document.querySelector("#thArea");
 				thAreaEl.innerHTML = "";
@@ -300,7 +298,7 @@
 				return scList;
 			}
 			//스케쥴 날짜 출력하기
-			let reserve_scdate = null;
+			
 			function printScDateList(scList){
 				console.log("날짜 생성 기능")
 				let dateArea = document.querySelector("#scDateArea");
@@ -309,6 +307,7 @@
 				for(let sc of scList){
 					let selectListEl = document.createElement('div');
 					selectListEl.setAttribute("class","selectList")
+					selectListEl.classList.add("displayinline");
 					let dateArr = sc.scdate.split("/");
 					if(nowMM!=dateArr[1]){
 						nowMM = dateArr[1];
@@ -347,7 +346,7 @@
 				})
 			}
 			//스케쥴 시간 홀 출력하기
-			let reserve_schall = null;
+			
 				function printSchedulesList(scList){
 					let timeArea = document.querySelector("#scTimeArea");
 					timeArea.innerHTML ="";
@@ -362,6 +361,7 @@
 							
 							let selectEl = document.createElement("div");
 							selectEl.setAttribute("class","selectList");
+							selectEl.classList.add("displayinline");
 							selectEl.innerText = sc.scdate.split(" ")[1];
 							selectEl.addEventListener("click", function(e){
 								reserve_scdate = reserve_scdate.split(" ")[0] + " " + sc.scdate.split(" ")[1];
@@ -400,24 +400,48 @@
 				}
 				
 			}
-			// 예매 기능
-			function reserve(){
-				console.log("loginId : ${sessionScope.loginId}");
+    		</script>
+    		<script type="text/javascript">
+			// 예매 결제 기능
+            function movieReserve(){
+            	console.log("loginId : ${sessionScope.loginId}");
 				console.log("reserve_mvcode : "+ reserve_mvcode);
 				console.log("reserve_thcode : "+ reserve_thcode);
 				console.log("reserve_scdate : "+ reserve_scdate);
 				console.log("reserve_schall : "+ reserve_schall);
-				$.ajax({
-					type:"get",
-					url:"/reserve",
-					data:{"mid":${sessionScope.loginId},"mvcode":reserve_mvcode, "thcode":reserve_thcode, "scdate":reserve_scdate,"schall":reserve_schall},
-					success:function(){
-						console.log("성공");
-					}
-				})
-			}
-    		</script>
-    		<script type="text/javascript">
+				if("${sessionScope.loginId}" == ""){
+					alert('로그인후 이용가능합니다.');
+					location.href = '/memberLoginForm';
+				}else if(reserve_mvcode == null){
+            		alert('영화를 선택해주세요!');
+            	}else if(reserve_thcode == null){
+            		alert('극장을 선택해주세요!');
+            	}else if(reserve_scdate == null){
+            		alert('날짜를 선택해주세요!');
+            	}else if(reserve_schall == null){
+            		alert('극장을 선택해주세요!');
+            	}else{
+            		//1. 카카오페이 API 결제준비요청
+            		
+            		//2. Controller INSERT 요청
+	            	$.ajax({
+						type:"post",
+						url:"/registReserveInfo",
+						async:false,
+						data:{"mid":${sessionScope.loginId},"mvcode":reserve_mvcode, "thcode":reserve_thcode, "scdate":reserve_scdate,"schall":reserve_schall},
+						success:function(rs){
+							console.log(rs);
+							if(rs){
+								console.log("성공");							
+							}else{
+								console.log("실패");
+							}
+						}
+					})	
+            		
+            		
+            	}
+            }
     		</script>
         </body>
 
