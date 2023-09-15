@@ -18,4 +18,12 @@
 	<select id="selectMid" resultType="String">
 		select mid from members where mid = #{mid}
 	</select>
+	<select id="getReserveList" resultType="hashmap">
+	select *
+	from schedules sc inner join movies mv on mv.mvcode = sc.mvcode 
+	inner join reserves rsv on sc.schall = rsv.schall and sc.scdate = rsv.scdate 
+	inner join theaters th on sc.thcode = th.thcode
+	where rsv.mid = #{mid}
+	order by sc.scdate desc
+	</select>
 </mapper>

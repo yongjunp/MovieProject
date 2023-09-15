@@ -2,6 +2,8 @@ package com.MovieProject.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -72,6 +74,10 @@ public class MemberService {
 	public String checkId(String mid) {
 		System.out.println("MemberService - checkId()");
 		return mdao.selectMid(mid);
+	}
+	public ArrayList<HashMap<String, String>> getReserveList(String mid) {
+		System.out.println("service - getReserveList() 호출");
+		return mdao.getReserveList(mid);
 	}
 	
 

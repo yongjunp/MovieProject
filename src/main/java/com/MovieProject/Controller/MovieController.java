@@ -1,6 +1,9 @@
 package com.MovieProject.Controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.MovieProject.Dto.Movie;
 import com.MovieProject.Dto.Reserve;
+import com.MovieProject.Service.MemberService;
 import com.MovieProject.Service.MovieService;
 
 @Controller
@@ -73,4 +77,5 @@ public class MovieController {
 		boolean result = mvsvc.insertReserve(rs);
 		return result;
 	}
+
 }

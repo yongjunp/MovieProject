@@ -1,5 +1,9 @@
 package com.MovieProject.Controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,5 +124,24 @@ public class MemberController {
 		System.out.println("아이디 중복확인 요청");
 		String rs = msvc.checkId(mid);
 		return rs;
+	}
+	@RequestMapping(value = "/reserveList")
+	public ModelAndView reserveList(HttpSession session, RedirectAttributes ra) {
+		System.out.println("예매 내역 조회");
+		ModelAndView mav = new ModelAndView();
+		String mid = (String)session.getAttribute("loginId");
+		if(mid == null) {
+			ra.addFlashAttribute("msg","로그인 후 이용해 주세요");
+			mav.setViewName("redirect:/");
+			return mav;
+		}
+		//예매 목록 조회 (영화 제목, 극장, 상영관, 상영시간)
+		ArrayList<HashMap<String, String>> rsvList = msvc.getReserveList(mid);
+		System.out.println(rsvList.get(0).get("MVPOSTER"));
+		
+		
+		mav.addObject("rsvList",rsvList);
+		mav.setViewName("member/ReserveList");
+		return mav;
 	}
 }

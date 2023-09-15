@@ -11,6 +11,7 @@
             <!-- Favicon-->
             <link rel="icon" type="image/x-icon" href="/resources/user/assets/favicon.ico" />
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+            <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.4.0/kakao.min.js" integrity="sha384-mXVrIX2T/Kszp6Z0aEWaA8Nm7J6/ZeWXbL8UpGRjKwWe56Srd/iyNmWMBhcItAjH" crossorigin="anonymous"></script>
             <!-- Core theme CSS (includes Bootstrap)-->
             <link href="/resources/css/styles.css" rel="stylesheet" />
             <style type="text/css">
@@ -130,7 +131,7 @@
             	</div>
             	<div class="col-lg-3">
             		<div class="card mb-2">
-            				<button class="btn btn-danger" onclick="movieReserve()">예매하기</button>
+            				<button class="btn btn-danger" onclick='movieReserve()'>예매하기</button>
             		</div>
             	</div>
             </div>
@@ -422,8 +423,36 @@
             		alert('극장을 선택해주세요!');
             	}else{
             		//1. 카카오페이 API 결제준비요청
-            		
+            		Kakao.init('f27f610181c7185c2861db20210a1bd5');
+					console.log(Kakao.isInitialized())
+    				Kakao.Auth.authorize({
+    					redirectUri:'http://localhost:8080/ReservePage',
+    					state:'6ce49a0a2e60b2934dc1e35db33772d2';
+  					});
+					
+					$.ajax({
+						type:"post",
+						url:"https://kapi.kakao.com/v1/payment/ready",
+						contentType:"application/x-www-form-urlencoded;charset=utf-8",
+						data:{
+							"cid":"TC0ONETIME", 
+							"partner_order_id":"RE00001", 
+							"partner_user_id":"${sessionScope.loginId}",
+							"item_name":reserve_mvcode,
+							"quantity":"1",
+							"total_amount":"9000",
+							"tax_free_amount":"1000",
+							"approval_url":"/movie/resultReserve?rs=success",
+							"cancel_url":"/movie/resultReserve?rs=cancel",
+							"fail_url":"/movie/resultReserve?rs="
+						},
+						dataType:"json",
+						success:function(){
+							console.log("성공");
+						}
+					})
             		//2. Controller INSERT 요청
+            		/*
 	            	$.ajax({
 						type:"post",
 						url:"/registReserveInfo",
@@ -437,7 +466,7 @@
 								console.log("실패");
 							}
 						}
-					})	
+					})*/	
             		
             		
             	}
