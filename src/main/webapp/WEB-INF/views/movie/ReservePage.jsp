@@ -161,6 +161,10 @@
 					printMovieList(mvList);
 					let thList = getReserveTheaterList('1');
 					printTheaterList(thList);
+					if("${param.mvcode}"!= ""){
+    				document.querySelector("#${param.mvcode}").click();
+    				document.querySelector("#${param.mvcode}").focus();
+					}
     			})
     			
     		</script>
@@ -194,6 +198,8 @@
 				for(let mv of mvList){
 					let selectListEl = document.createElement("div");
 					selectListEl.setAttribute("class", "selectList");
+					selectListEl.setAttribute("id", mv.mvcode);
+					selectListEl.setAttribute("tabindex", "0");
 					selectListEl.addEventListener("click", function(e){
 						if(reserve_first == null){
 							reserve_first = "mv";
@@ -423,34 +429,11 @@
             		alert('극장을 선택해주세요!');
             	}else{
             		//1. 카카오페이 API 결제준비요청
-            		Kakao.init('f27f610181c7185c2861db20210a1bd5');
-					console.log(Kakao.isInitialized())
-    				Kakao.Auth.authorize({
-    					redirectUri:'http://localhost:8080/ReservePage',
-    					state:'6ce49a0a2e60b2934dc1e35db33772d2';
-  					});
-					
-					$.ajax({
-						type:"post",
-						url:"https://kapi.kakao.com/v1/payment/ready",
-						contentType:"application/x-www-form-urlencoded;charset=utf-8",
-						data:{
-							"cid":"TC0ONETIME", 
-							"partner_order_id":"RE00001", 
-							"partner_user_id":"${sessionScope.loginId}",
-							"item_name":reserve_mvcode,
-							"quantity":"1",
-							"total_amount":"9000",
-							"tax_free_amount":"1000",
-							"approval_url":"/movie/resultReserve?rs=success",
-							"cancel_url":"/movie/resultReserve?rs=cancel",
-							"fail_url":"/movie/resultReserve?rs="
-						},
-						dataType:"json",
-						success:function(){
-							console.log("성공");
-						}
-					})
+					kakaoPay_ready();
+            		
+            		
+            		
+            		
             		//2. Controller INSERT 요청
             		/*
 	            	$.ajax({
@@ -471,6 +454,21 @@
             		
             	}
             }
+    		</script>
+    		<%-- 카카오페이 script --%>
+    		<script type="text/javascript">
+    		function kakaoPay_ready(){
+    			console.log('카카오 페이 결제 준비');
+    			$.ajax({
+    				type:"post",
+    				url:"kakaoPay_ready",
+    				data:{"mvcode":reserve_mvcode, "thcode":reserve_thcode, "scdate":reserve_scdate,"schall":reserve_schall},
+    				success:function(result){
+    					console.log(result);
+    					window.open(result, "pay", "width=400, height=500");
+    				}
+    			})
+    		}
     		</script>
         </body>
 

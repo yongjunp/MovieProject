@@ -29,9 +29,16 @@
             <!-- Page content-->
             <div class="container">
             <!-- 컨텐츠 시작 -->
-            <c:forEach items="${rsvList }" var="mv">
-            	
-            </c:forEach>
+            	<div class="row">
+            		<table>
+            			<tr>
+            				<th>이름</th>
+            				<th>상영날짜</th>
+            				<th>예매날짜</th>
+            				<th>예매취소/관람평</th>
+            			</tr>
+            		</table>
+            	</div>
           	<!-- 컨텐츠 종료 -->
             </div>
             <!-- Footer-->

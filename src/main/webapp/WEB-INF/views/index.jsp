@@ -79,7 +79,7 @@
                                         <div class="card-body">
                                             <div class="small text-muted">예매율</div>
                                             <h2 class="card-title h4" title="${mv.mvtitle }" style="overflow:hidden; white-space:nowrap;">${mv.mvtitle } + ${mv.mvopen}</h2>
-                                            <a class="btn btn-danger" href="#!">예매하기</a>
+                                            <a class="btn btn-danger" href="/ReservePage?mvcode=${mv.mvcode }">예매하기</a>
                                         </div>
                                     </div>
                                     <!-- Blog post-->
@@ -176,8 +176,8 @@
             <script type="text/javascript">
             console.log('${sessionScope.loginProfile}');
             $(document).ready(function (){
-    			if('${msg}'!=''){
-    				alert('${msg}');
+    			if('${param.msg}'!=''){
+    				alert('${param.msg}');
     			}
     		})
             </script>
