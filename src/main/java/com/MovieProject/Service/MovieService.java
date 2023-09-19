@@ -85,7 +85,7 @@ public class MovieService {
 		return new Gson().toJson(mvdao.selectScList(mvcode, thcode, scdate));
 	}
 
-	public boolean insertReserve(Reserve rs) {
+	public String insertReserve(Reserve rs) {
 		System.out.println("servece - inserteReserve()호출");
 		String maxRecode = mvdao.selectMaxRecode();
 		String recode = "";
@@ -100,12 +100,15 @@ public class MovieService {
 		rs.setRecode(recode);
 		System.out.println(rs);
 		int result = mvdao.insertReserve(rs);
-		boolean resultMsg = false;
 		if(result > 0) {
-			resultMsg = true;
+			return recode;
 		}else {
-			resultMsg = false;
+			return null;
 		}
-		return resultMsg;
+	}
+
+	public int cancelReserve(String recode) {
+		System.out.println("service - cancelReserve()호출");
+		return mvdao.deleteReserve(recode);
 	}
 }

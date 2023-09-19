@@ -53,4 +53,8 @@
 	<insert id="insertReserve">
 	insert into reserves values(#{recode},#{mid},#{mvcode},#{thcode},#{schall},TO_DATE(#{scdate}, 'YYYY/MM/DD HH24:MI:SS'), sysdate)
 	</insert>
+	<delete id="deleteReserve">
+	delete reserves where recode = #{recode}
+	</delete>
+	
 </mapper>

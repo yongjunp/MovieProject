@@ -33,7 +33,7 @@ public class ApiService {
 		 fail_url 			결제 실패 시 redirect url, "http://localhost:8080/kakaoPay_fail"
 		 */
 		HashMap<String, String> requestParams = new HashMap<String, String>();
-		requestParams.put("partner_order_id", "RE00000");
+		requestParams.put("partner_order_id", reInfo.getRecode());
 		requestParams.put("partner_user_id", "TESTID");
 		requestParams.put("item_name","영화예매결제");
 		requestParams.put("quantity", "1");
@@ -52,10 +52,10 @@ public class ApiService {
 			String nextUrl = re.get("next_redirect_pc_url").getAsString();
 			System.out.println("tid : "+tid);
 			session.setAttribute("tid", tid);
+			session.setAttribute("recode", reInfo.getRecode());
 			System.out.println("nextUrl : "+nextUrl);
 			result = nextUrl;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return result;
@@ -96,6 +96,25 @@ public class ApiService {
 		System.out.println(sb.toString());
 
 		return sb.toString();
+	}
+
+	public String kakaoPay_approval(String pg_token, String tid,String recode, String mid) {
+		System.out.println("service - kakaoPay_approval() 호출");
+		String reqeustUrl = "https://kapi.kakao.com/v1/payment/approve";
+		HashMap<String, String> requestParams = new HashMap<String, String>();
+		requestParams.put("tid", tid);
+		requestParams.put("cid", "TC0ONETIME");
+		requestParams.put("pg_token", pg_token);
+		requestParams.put("partner_order_id", recode);
+		requestParams.put("partner_user_id", mid);
+		String result = null;
+		try {
+			String response = kakaoResponse_json(reqeustUrl,requestParams );
+			result = response;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 }

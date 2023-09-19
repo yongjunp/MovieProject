@@ -72,10 +72,16 @@ public class MovieController {
 		return scList;
 	}
 	@RequestMapping(value = "/registReserveInfo")
-	public @ResponseBody boolean registReserveInfo(Reserve rs) {
+	public @ResponseBody String registReserveInfo(Reserve rs) {
 		System.out.println("예매하기");
-		boolean result = mvsvc.insertReserve(rs);
+		String result = mvsvc.insertReserve(rs);
 		return result;
 	}
-
+	
+	@RequestMapping(value="/cancelReserve")
+	public @ResponseBody int cancelReserve(String recode) {
+		System.out.println("예매 취소 요청");
+		int rs = mvsvc.cancelReserve(recode);
+		return 0;
+	}
 }

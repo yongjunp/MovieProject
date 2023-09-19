@@ -25,4 +25,6 @@ public interface MovieDao {
 
 	int insertReserve(Reserve rs);
 
+	int deleteReserve(String recode);
+
 }

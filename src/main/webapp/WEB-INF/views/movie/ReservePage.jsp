@@ -428,46 +428,65 @@
             	}else if(reserve_schall == null){
             		alert('극장을 선택해주세요!');
             	}else{
-            		//1. 카카오페이 API 결제준비요청
-					kakaoPay_ready();
-            		
-            		
-            		
-            		
-            		//2. Controller INSERT 요청
-            		/*
-	            	$.ajax({
-						type:"post",
-						url:"/registReserveInfo",
-						async:false,
-						data:{"mid":${sessionScope.loginId},"mvcode":reserve_mvcode, "thcode":reserve_thcode, "scdate":reserve_scdate,"schall":reserve_schall},
-						success:function(rs){
-							console.log(rs);
-							if(rs){
-								console.log("성공");							
-							}else{
-								console.log("실패");
-							}
-						}
-					})*/	
-            		
-            		
+            		//1. insert >> 성공
+            		registReserveInfo("${sessionScope.loginId}",reserve_mvcode,reserve_thcode,reserve_scdate)
+					
             	}
             }
     		</script>
     		<%-- 카카오페이 script --%>
     		<script type="text/javascript">
-    		function kakaoPay_ready(){
+    		function kakaoPay_ready(recode){
     			console.log('카카오 페이 결제 준비');
     			$.ajax({
     				type:"post",
     				url:"kakaoPay_ready",
-    				data:{"mvcode":reserve_mvcode, "thcode":reserve_thcode, "scdate":reserve_scdate,"schall":reserve_schall},
+    				data:{"recode":recode,"mvcode":reserve_mvcode, "thcode":reserve_thcode, "scdate":reserve_scdate,"schall":reserve_schall},
     				success:function(result){
     					console.log(result);
-    					window.open(result, "pay", "width=400, height=500");
+    					window.open(result, "pay", "width=450, height=500");
     				}
     			})
+    		}
+    		let recode = null;
+    		function registReserveInfo(mid){
+    			$.ajax({
+					type:"post",
+					url:"/registReserveInfo",
+					async:false,
+					data:{"mid":mid,"mvcode":reserve_mvcode, "thcode":reserve_thcode, "scdate":reserve_scdate,"schall":reserve_schall},
+					success:function(rs){
+						console.log(rs);
+						if(rs.length > 0){
+							console.log("성공");							
+							kakaoPay_ready(rs);
+							let recode = rs;
+						}else{
+							console.log("실패");
+							alert('예매 처리에 실패 하였습니다.');
+							
+						}
+					}
+    		})
+    		}
+    		function reserveResult_success(){
+    			location.href="/";
+    		}
+    		function reserveResult_fail(){
+    			alert('예매 처리에 실패 하였습니다.');
+    			$.ajax({
+    				type:"get",
+    				url:"cancelReserve",
+    				data:{"recode":recode},
+    				success:function(rs){
+    					if(rs>0){
+    						console.log("예매 취소 성공");
+    					}else{
+    						console.log("예매 취소 시류ㅐ");
+    					}
+    				}
+    			})
+    			location.reload();
     		}
     		</script>
         </body>
