@@ -34,7 +34,7 @@ public class ApiService {
 		 */
 		HashMap<String, String> requestParams = new HashMap<String, String>();
 		requestParams.put("partner_order_id", reInfo.getRecode());
-		requestParams.put("partner_user_id", "TESTID");
+		requestParams.put("partner_user_id", (String)session.getAttribute("loginId"));
 		requestParams.put("item_name","영화예매결제");
 		requestParams.put("quantity", "1");
 		requestParams.put("total_amount", "12000");

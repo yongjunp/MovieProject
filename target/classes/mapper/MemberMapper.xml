@@ -19,7 +19,7 @@
 		select mid from members where mid = #{mid}
 	</select>
 	<select id="getReserveList" resultType="hashmap">
-	select *
+	select mv.mvtitle, th.thname, sc.schall,to_char(sc.scdate,'yyyy/mm/dd HH24:MI') as scdate, rsv.recode
 	from schedules sc inner join movies mv on mv.mvcode = sc.mvcode 
 	inner join reserves rsv on sc.schall = rsv.schall and sc.scdate = rsv.scdate 
 	inner join theaters th on sc.thcode = th.thcode

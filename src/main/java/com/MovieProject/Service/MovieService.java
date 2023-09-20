@@ -20,7 +20,9 @@ public class MovieService {
 	public ArrayList<Movie> selectMvList() {
 		System.out.println("selectMvList()호출");
 		ArrayList<Movie> mvList = mvdao.selectMvList();
+		int totalCount = 0;
 		for(Movie mv : mvList) {
+			totalCount += Integer.parseInt(mv.getRecount());
 			String mvgrade = mv.getMvinfo().split(",")[0];
 			if(mvgrade.equals("전체관람가")) {
 				mvgrade = "All";
@@ -32,6 +34,12 @@ public class MovieService {
 				mvgrade = "19";
 			}
 			mv.setMvstate(mvgrade);
+		}
+		for(Movie mv : mvList) {
+			int recount = Integer.parseInt(mv.getRecount());
+			double reRate = ((double)recount/(double)totalCount) * 100;
+			String recount_str = Math.round((reRate * 100)/100.0)+"";
+				mv.setRecount(recount_str);
 		}
 		return mvList;
 	}

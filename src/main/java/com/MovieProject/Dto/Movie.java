@@ -14,4 +14,5 @@ public class Movie {
 	private String mvposter;	//포스터
 	private String mvstate;		//상태		
 
+	private String recount;
 }

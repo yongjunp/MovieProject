@@ -137,9 +137,24 @@ public class MemberController {
 		}
 		//예매 목록 조회 (영화 제목, 극장, 상영관, 상영시간)
 		ArrayList<HashMap<String, String>> rsvList = msvc.getReserveList(mid);
-		System.out.println(rsvList.get(0).get("MVPOSTER"));
-		mav.addObject("rsvList",new Gson().toJson(rsvList));
+		System.out.println(rsvList.get(0).get("SCDATE"));
+		mav.addObject("rsvList",rsvList);
 		mav.setViewName("member/ReserveList");
+		return mav;
+	}
+	@RequestMapping(value="/deleteReserve")
+	public ModelAndView deleteReserve(String recode, RedirectAttributes ra) {
+		System.out.println("예약 취소 요청");
+		System.out.println(recode);
+		ModelAndView mav = new ModelAndView();
+		int rs = msvc.deleteReserve(recode);
+		if(rs > 0) {
+			mav.setViewName("redirect:/");
+			ra.addFlashAttribute("msg","예약취소에 성공하였습니다.");
+		}else {
+			mav.setViewName("reserveList");
+			mav.addObject("msg","예약취소를 실패하였습니다.");
+		}
 		return mav;
 	}
 }

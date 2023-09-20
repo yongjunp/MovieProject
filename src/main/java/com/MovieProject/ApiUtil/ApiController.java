@@ -33,7 +33,9 @@ public class ApiController {
 		String tid = (String)session.getAttribute("tid");
 		System.out.println("tid : "+tid);
 		String recode = (String)session.getAttribute("recode");
+		System.out.println("recode : "+ recode);
 		String mid = (String)session.getAttribute("loginId");
+		System.out.println("mid : "+mid);
 		String rs = apisvc.kakaoPay_approval(pg_token, tid,recode, mid);
 		if(!rs.equals(null)) {
 			System.out.println("결제 승인");

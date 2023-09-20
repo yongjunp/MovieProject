@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.MovieProject.Dao.MemberDao;
+import com.MovieProject.Dao.MovieDao;
 import com.MovieProject.Dto.Member;
 
 @Service
@@ -20,6 +21,9 @@ public class MemberService {
 
 	@Autowired
 	private MemberDao mdao;
+	@Autowired
+	private MovieDao mvdao;
+	
 	public Member getLoginMemberInfo_kakao(String id) {
 		System.out.println("MemberService - getLoginMemberInfo_kakao()");
 		Member mem = new Member();
@@ -78,6 +82,10 @@ public class MemberService {
 	public ArrayList<HashMap<String, String>> getReserveList(String mid) {
 		System.out.println("service - getReserveList() 호출");
 		return mdao.getReserveList(mid);
+	}
+	public int deleteReserve(String recode) {
+		System.out.println("service - deleteReserve()호출");
+		return mvdao.deleteReserve(recode);
 	}
 	
 
